@@ -6,6 +6,14 @@ entender o mercado brasileiro de Dados e Inteligência Artificial a partir de
 com um relatório executivo trazendo os principais achados e recomendações
 estratégicas para uma instituição que quer expandir sua área de dados.
 
+[![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![AWS Glue](https://img.shields.io/badge/AWS%20Glue-ETL-FF9900?logo=amazonaws&logoColor=white)](https://aws.amazon.com/glue/)
+[![Amazon Athena](https://img.shields.io/badge/Amazon%20Athena-SQL-FF9900?logo=amazonaws&logoColor=white)](https://aws.amazon.com/athena/)
+[![Apache Spark](https://img.shields.io/badge/Apache%20Spark-PySpark-E25A1C?logo=apachespark&logoColor=white)](https://spark.apache.org/)
+[![Pandas](https://img.shields.io/badge/Pandas-data%20wrangling-150458?logo=pandas&logoColor=white)](https://pandas.pydata.org/)
+
+---
+
 ## 1. Identificação
 
 | Campo | Valor |

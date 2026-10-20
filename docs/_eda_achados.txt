@@ -1,0 +1,11 @@
+Base Gold (AWS real): 13.057 respondentes (2023-2024=4.270, 2024-2025=5.293, 2025-2026=3.494).
+Q1: cargo mais comum é 'Analista de Dados' com 2.145 respondentes.
+Q1: 61% dos profissionais estão na região Sudeste (concentração regional forte).
+Q2: 'Eng. de ML/AI Engineer' tem a maior remuneração média (R$ 16.382/mês).
+Q3: 23.9% dos respondentes se identificam como mulheres (mercado ainda majoritariamente masculino: 75.6%).
+Q3: participação feminina cai de 28,2% (Júnior) para 20,1% (Especialista/Staff+) na edição mais recente — queda de ~8 p.p., evidência de 'funil furado' (leaky pipeline).
+Q3: no nível Sênior, mulheres recebem em média 15% menos que homens (R$ 12.012 vs R$ 14.097).
+Q4: Python passou de 49% (2023) para 55% (2025) de adoção; SQL caiu de 55% (2023) para 50% (2025) — Python ultrapassa o SQL como linguagem nº 1 entre 2024 e 2025.
+Q5: adoção individual de IA Generativa saltou de 80% (2024) para 98% (2025) — a edição 2023-2024 não incluía essa pergunta.
+Q5: apenas 24% dos gestores dizem que IA Generativa é 'prioridade alta' da empresa — gap de 74 p.p. entre uso individual e estratégia formal.
+Q6: região com maior salário médio é Sudeste (R$ 11.463), 36% acima da região Nordeste.

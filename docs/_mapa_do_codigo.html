@@ -1,0 +1,679 @@
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Mapa do Código</title>
+<style>
+  /* Layout concept: a vertical "pipeline" reading order (hero -> flow diagram ->
+     folder-by-folder accordion -> decisions -> FAQ), mirroring how data itself
+     flows through the project (local -> AWS -> entrega). Teal accent = water/flow,
+     tying the visual language to "pipeline" and "Bronze/Silver/Gold" without
+     literally reusing the FIAP magenta brand (this page is for Gustavo's own
+     understanding, not a branded deliverable). */
+  :root {
+    --bg: #F3F5F6;
+    --surface: #FFFFFF;
+    --surface-2: #ECF1F2;
+    --border: #D8DEE2;
+    --fg: #141A1F;
+    --fg-muted: #51606A;
+    --fg-faint: #7E8B92;
+    --accent: #0E7C7B;
+    --accent-ink: #063F3F;
+    --accent-soft: #E1F2F1;
+    --code-bg: #EEF3F3;
+    --code-fg: #0B4443;
+    --local-tag: #8A5A00;
+    --local-tag-bg: #FCF1DC;
+    --aws-tag: #0E6DB8;
+    --aws-tag-bg: #E4F1FB;
+    --warn-bg: #FCEEEA;
+    --warn-border: #E8B6A4;
+    --warn-ink: #7A3419;
+    --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+    --font-body: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+    --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #10171A;
+      --surface: #182226;
+      --surface-2: #1F2B30;
+      --border: #2B3B41;
+      --fg: #E9F0F1;
+      --fg-muted: #A9BAC0;
+      --fg-faint: #7D8F96;
+      --accent: #4FD1C8;
+      --accent-ink: #BDEEEA;
+      --accent-soft: #163534;
+      --code-bg: #10201F;
+      --code-fg: #8FE9E0;
+      --local-tag: #E9C068;
+      --local-tag-bg: #3A2E10;
+      --aws-tag: #7EC1F2;
+      --aws-tag-bg: #102B3A;
+      --warn-bg: #3A2016;
+      --warn-border: #6B3A28;
+      --warn-ink: #F2C4AE;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10171A;
+    --surface: #182226;
+    --surface-2: #1F2B30;
+    --border: #2B3B41;
+    --fg: #E9F0F1;
+    --fg-muted: #A9BAC0;
+    --fg-faint: #7D8F96;
+    --accent: #4FD1C8;
+    --accent-ink: #BDEEEA;
+    --accent-soft: #163534;
+    --code-bg: #10201F;
+    --code-fg: #8FE9E0;
+    --local-tag: #E9C068;
+    --local-tag-bg: #3A2E10;
+    --aws-tag: #7EC1F2;
+    --aws-tag-bg: #102B3A;
+    --warn-bg: #3A2016;
+    --warn-border: #6B3A28;
+    --warn-ink: #F2C4AE;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    line-height: 1.55;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .wrap { max-width: 900px; margin: 0 auto; padding-block: 28px 80px; }
+
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 600; color: var(--fg); text-wrap: balance; }
+  h1 { font-size: clamp(1.9rem, 5vw, 2.6rem); line-height: 1.1; margin: 0 0 10px; }
+  h2 { font-size: clamp(1.35rem, 3.4vw, 1.7rem); margin: 0 0 6px; }
+  h3 { font-family: var(--font-mono); font-weight: 600; font-size: 1.02rem; margin: 0; }
+  p { margin: 0 0 1em; color: var(--fg); max-width: 68ch; }
+  .lede { color: var(--fg-muted); font-size: 1.08rem; max-width: 62ch; }
+  a { color: var(--accent-ink); }
+
+  code, .mono { font-family: var(--font-mono); }
+  .path {
+    font-family: var(--font-mono);
+    background: var(--code-bg);
+    color: var(--code-fg);
+    padding: 0.12em 0.45em;
+    border-radius: 5px;
+    font-size: 0.92em;
+    white-space: nowrap;
+  }
+
+  /* ---------- top nav ---------- */
+  nav.toc {
+    position: sticky; top: env(safe-area-inset-top, 0px);
+    z-index: 20;
+    display: flex; gap: 4px; flex-wrap: wrap;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 10px max(16px, env(safe-area-inset-left, 0px)) 10px max(16px, env(safe-area-inset-right, 0px));
+    margin: 0 calc(-1 * max(16px, env(safe-area-inset-left, 0px))) 0 calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
+  }
+  nav.toc a {
+    font-size: 0.85rem; font-weight: 600; color: var(--fg-muted);
+    text-decoration: none; padding: 6px 10px; border-radius: 999px;
+  }
+  nav.toc a:hover { background: var(--surface-2); color: var(--fg); }
+
+  section { padding-top: 56px; scroll-margin-top: 54px; }
+  section:first-of-type { padding-top: 30px; }
+  .section-eyebrow {
+    font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--accent-ink); margin-bottom: 8px; font-weight: 600;
+  }
+
+  /* ---------- hero ---------- */
+  .hero-meta {
+    display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px;
+  }
+  .stat {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 14px; min-width: 120px;
+  }
+  .stat b { display: block; font-family: var(--font-display); font-size: 1.4rem; }
+  .stat span { font-size: 0.78rem; color: var(--fg-muted); }
+
+  /* ---------- flow diagram ---------- */
+  .lanes { display: flex; flex-direction: column; gap: 14px; margin-top: 22px; }
+  .lane { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--surface); }
+  .lane-label {
+    font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; padding: 10px 16px; border-bottom: 1px solid var(--border);
+  }
+  .lane.local .lane-label { background: var(--local-tag-bg); color: var(--local-tag); }
+  .lane.aws .lane-label { background: var(--aws-tag-bg); color: var(--aws-tag); }
+  .lane-body { padding: 16px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .node {
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 12px; font-size: 0.86rem; min-width: 0; flex: 1 1 150px;
+  }
+  .node .t { font-weight: 700; display: block; margin-bottom: 2px; }
+  .node .f { font-family: var(--font-mono); font-size: 0.76rem; color: var(--fg-muted); }
+  .arrow-down { text-align: center; color: var(--fg-faint); font-size: 1.1rem; margin: -4px 0; }
+
+  /* ---------- folder accordion ---------- */
+  .folder {
+    border: 1px solid var(--border); border-radius: 14px; background: var(--surface);
+    margin-bottom: 14px; overflow: hidden;
+  }
+  .folder > summary {
+    list-style: none; cursor: pointer; padding: 16px 18px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    font-family: var(--font-mono); font-weight: 700; font-size: 1.02rem;
+  }
+  .folder > summary::-webkit-details-marker { display: none; }
+  .folder > summary .chev { color: var(--fg-faint); transition: transform 0.15s ease; flex-shrink: 0; }
+  .folder[open] > summary .chev { transform: rotate(90deg); }
+  .folder .folder-sub { font-family: var(--font-body); font-weight: 400; color: var(--fg-muted); font-size: 0.86rem; }
+  .folder-body { padding: 0 18px 18px; border-top: 1px solid var(--border); }
+  .folder-intro { padding-top: 14px; color: var(--fg-muted); font-size: 0.94rem; }
+
+  .file {
+    border-top: 1px dashed var(--border); padding: 14px 0;
+  }
+  .file:first-of-type { border-top: none; }
+  .file-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+  .tag {
+    font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.04em;
+    text-transform: uppercase; padding: 2px 7px; border-radius: 5px; flex-shrink: 0;
+  }
+  .tag.local { background: var(--local-tag-bg); color: var(--local-tag); }
+  .tag.aws { background: var(--aws-tag-bg); color: var(--aws-tag); }
+  .tag.gen { background: var(--accent-soft); color: var(--accent-ink); }
+  .file p { font-size: 0.93rem; margin-bottom: 0.5em; }
+  .file .why { color: var(--fg-muted); font-size: 0.89rem; }
+
+  /* ---------- decisions ---------- */
+  .decision {
+    background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--accent);
+    border-radius: 10px; padding: 16px 18px; margin-bottom: 14px;
+  }
+  .decision h3 { font-family: var(--font-body); font-weight: 700; font-size: 1.02rem; margin-bottom: 6px; }
+  .decision p { font-size: 0.93rem; margin-bottom: 0; }
+  .decision p + p { margin-top: 0.6em; }
+
+  .bug-box {
+    background: var(--warn-bg); border: 1px solid var(--warn-border); border-radius: 10px;
+    padding: 14px 16px; margin-top: 10px; font-size: 0.89rem; color: var(--warn-ink);
+  }
+  .bug-box b { display: block; margin-bottom: 4px; font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
+
+  /* ---------- faq ---------- */
+  .faq {
+    border: 1px solid var(--border); border-radius: 12px; background: var(--surface);
+    margin-bottom: 10px; overflow: hidden;
+  }
+  .faq > summary {
+    list-style: none; cursor: pointer; padding: 14px 16px; font-weight: 700; font-size: 0.97rem;
+    display: flex; justify-content: space-between; gap: 10px; align-items: baseline;
+  }
+  .faq > summary::-webkit-details-marker { display: none; }
+  .faq > summary .chev { color: var(--fg-faint); transition: transform 0.15s ease; }
+  .faq[open] > summary .chev { transform: rotate(45deg); }
+  .faq-body { padding: 0 16px 16px; color: var(--fg-muted); font-size: 0.92rem; border-top: 1px solid var(--border); }
+  .faq-body { padding-top: 12px; }
+
+  table.ref { width: 100%; border-collapse: collapse; font-size: 0.86rem; margin-top: 10px; }
+  table.ref th, table.ref td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  table.ref th { font-family: var(--font-mono); font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--fg-muted); }
+  .table-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; }
+  .table-scroll table.ref { margin-top: 0; }
+  .table-scroll th:first-child, .table-scroll td:first-child { white-space: nowrap; }
+
+  footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--fg-faint); font-size: 0.85rem; }
+
+  @media (max-width: 560px) {
+    .lane-body { flex-direction: column; align-items: stretch; }
+    .node { flex: 1 1 auto; }
+  }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+
+<div class="wrap">
+
+  <nav class="toc">
+    <a href="#visao-geral">Visão geral</a>
+    <a href="#fluxo">Fluxo</a>
+    <a href="#pastas">Pastas e arquivos</a>
+    <a href="#decisoes">Decisões</a>
+    <a href="#perguntas">Perguntas</a>
+    <a href="#referencia">Referência rápida</a>
+  </nav>
+
+  <section id="visao-geral">
+    <div class="section-eyebrow">Tech Challenge Fase 3 · mapa do código</div>
+    <h1>Onde tudo fica, e por quê</h1>
+    <p class="lede">Este projeto tem código em dois lugares que fazem coisas parecidas de
+    propósito: um protótipo que roda no seu computador, e o pipeline real que rodou dentro
+    da AWS. Essa página explica cada arquivo, onde ele mora, o que ele produz, e o
+    raciocínio por trás das decisões — para você conseguir achar qualquer coisa sem
+    precisar reler tudo de novo.</p>
+    <div class="hero-meta">
+      <div class="stat"><b>18</b><span>arquivos de código no total</span></div>
+      <div class="stat"><b>2</b><span>pipelines paralelos (local e AWS)</span></div>
+      <div class="stat"><b>4</b><span>notebooks que rodaram de verdade na AWS</span></div>
+      <div class="stat"><b>13.057</b><span>respondentes na versão final e real</span></div>
+    </div>
+  </section>
+
+  <section id="fluxo">
+    <div class="section-eyebrow">Visão geral</div>
+    <h2>Dois pipelines, lado a lado</h2>
+    <p>O mesmo problema (transformar 3 pesquisas em 11 gráficos) foi resolvido duas vezes:
+    uma versão <strong>local</strong>, em Python puro, para testar a lógica rápido e sem
+    custo; e uma versão <strong>real</strong>, que rodou de verdade dentro da conta AWS do
+    grupo. O material executivo final usa só os números da versão da AWS — a local existiu
+    para validar a ideia antes de gastar tempo rodando no Glue.</p>
+
+    <div class="lanes">
+      <div class="lane local">
+        <div class="lane-label">No seu computador (protótipo, pandas)</div>
+        <div class="lane-body">
+          <div class="node"><span class="t">CSVs de referência</span><span class="f">data/raw/*.csv</span></div>
+          <div class="node"><span class="t">Harmoniza</span><span class="f">silver_harmonization.py</span></div>
+          <div class="node"><span class="t">Agrega</span><span class="f">gold_builder.py</span></div>
+          <div class="node"><span class="t">Gráficos (números locais)</span><span class="f">eda_charts.py</span></div>
+        </div>
+      </div>
+      <div class="arrow-down">↓ mesma lógica, traduzida para PySpark ↓</div>
+      <div class="lane aws">
+        <div class="lane-label">Dentro da AWS (pipeline real)</div>
+        <div class="lane-body">
+          <div class="node"><span class="t">3 CSVs reais</span><span class="f">S3 bucket tech-challenge-gt26</span></div>
+          <div class="node"><span class="t">Bronze</span><span class="f">job_bronze_tech_challenge</span></div>
+          <div class="node"><span class="t">Silver</span><span class="f">job_silver_tech_challenge</span></div>
+          <div class="node"><span class="t">Gold</span><span class="f">job_gold_tech_challenge</span></div>
+          <div class="node"><span class="t">Consulta</span><span class="f">Athena · 7 scripts .sql</span></div>
+          <div class="node"><span class="t">Gráficos reais</span><span class="f">job_eda_tech_challenge</span></div>
+        </div>
+      </div>
+      <div class="arrow-down">↓ números copiados manualmente do Athena ↓</div>
+      <div class="lane local">
+        <div class="lane-label">De volta no seu computador (entrega final)</div>
+        <div class="lane-body">
+          <div class="node"><span class="t">Gráficos com números reais</span><span class="f">eda_charts_aws.py</span></div>
+          <div class="node"><span class="t">Monta o relatório</span><span class="f">presentation/build_relatorio.py</span></div>
+          <div class="node"><span class="t">Entrega 1</span><span class="f">material_executivo.docx / .pdf</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pastas">
+    <div class="section-eyebrow">Arquivo por arquivo</div>
+    <h2>As pastas do projeto</h2>
+    <p>Clique em cada pasta para abrir. Cada arquivo tem uma etiqueta dizendo onde ele roda:
+    <span class="tag local">local</span> roda no seu computador,
+    <span class="tag aws">aws</span> rodou dentro do Glue/Athena,
+    <span class="tag gen">gerado</span> é um arquivo que outro script produz automaticamente
+    (não se edita à mão).</p>
+
+    <details class="folder" open>
+      <summary><span><span class="mono">src/</span> <span class="folder-sub">— o código Python que roda fora da AWS</span></span><span class="chev">▸</span></summary>
+      <div class="folder-body">
+        <p class="folder-intro">Esta pasta mistura duas gerações de código: os scripts que
+        escrevem os notebooks reais (o mais importante do projeto), o protótipo local antigo,
+        e a versão final que usa números reais. Veja a etiqueta de cada um.</p>
+
+        <div class="file">
+          <div class="file-head"><span class="path">build_notebooks.py</span><span class="tag local">local</span><span class="tag gen">gera outros arquivos</span></div>
+          <p>O arquivo mais importante da pasta. Não é um notebook — é um <em>gerador</em> de
+          notebooks: quando você roda <code>python src/build_notebooks.py</code>, ele escreve
+          os 4 arquivos <span class="path">.ipynb</span> dentro de <span class="path">notebooks/</span>
+          (Bronze, Silver, Gold, EDA), célula por célula.</p>
+          <p class="why"><strong>Por que existe assim:</strong> editar 4 notebooks separados à
+          mão é arriscado — fácil esquecer de aplicar a mesma correção nos 4. Com um gerador
+          único, qualquer bug (como os 2 que apareceram neste projeto) se corrige uma vez
+          aqui e depois se regenera os notebooks com <code>python src/build_notebooks.py</code>
+          de novo.</p>
+        </div>
+
+        <div class="file">
+          <div class="file-head"><span class="path">silver_harmonization.py</span><span class="tag local">local</span></div>
+          <p>Protótipo em pandas da etapa Silver: lê os CSVs de <span class="path">data/raw/</span>
+          e unifica as 3 edições da pesquisa (que têm colunas diferentes) num formato único.</p>
+          <p class="why"><strong>Por que existe:</strong> para testar a lógica de harmonização
+          rapidamente, sem precisar esperar o Spark "ligar" na AWS a cada teste (o cold start
+          leva 1-3 minutos). Os CSVs que ele lê não são exatamente os mesmos arquivos do S3
+          real — por isso os números daqui divergem um pouco dos números finais.</p>
+        </div>
+
+        <div class="file">
+          <div class="file-head"><span class="path">gold_builder.py</span><span class="tag local">local</span></div>
+          <p>Continuação do script acima: pega o resultado da Silver local e agrega nas 7
+          tabelas temáticas (mercado, remuneração, gênero, tecnologias, IA...).</p>
+        </div>
+
+        <div class="file">
+          <div class="file-head"><span class="path">eda_charts.py</span><span class="tag local">local</span></div>
+          <p>Gera os 11 gráficos da análise a partir dos números do protótipo LOCAL
+          (<span class="path">silver_harmonization.py</span> + <span class="path">gold_builder.py</span>).</p>
+          <p class="why"><strong>Importante:</strong> este NÃO é o script que gerou os gráficos
+          do relatório final — os números aqui são do protótipo, não os reais da AWS.</p>
+        </div>
+
+        <div class="file">
+          <div class="file-head"><span class="path">eda_charts_aws.py</span><span class="tag local">local</span><span class="tag gen">gera os PNGs finais</span></div>
+          <p>A versão que realmente importa. Gera os MESMOS 11 gráficos que o script acima,
+          só que com os números reais — copiados manualmente, um por um, dos resultados das
+          consultas no Amazon Athena (cada bloco do código cita a pergunta de negócio e a
+          query de onde o número veio, para dar pra conferir).</p>
+          <p class="why"><strong>Por que não só consultar a AWS direto na hora de gerar o relatório:</strong>
+          o relatório é montado localmente (próxima seção), e nem sempre há uma sessão AWS
+          ativa disponível — os números reais ficam "congelados" neste arquivo depois de
+          validados uma vez, para o relatório poder ser reconstruído a qualquer momento sem
+          depender da AWS estar online.</p>
+        </div>
+
+        <div class="file">
+          <div class="file-head"><span class="path">viz_style.py</span><span class="tag local">local</span></div>
+          <p>Não gera gráfico nenhum sozinho. Define a paleta de cores (magenta oficial da
+          FIAP) e o estilo visual compartilhado que os dois scripts de gráfico acima importam
+          — garante que todo gráfico do projeto tem a mesma identidade visual.</p>
+        </div>
+
+        <div class="file">
+          <div class="file-head"><span class="path">utils/</span><span class="tag local">local</span></div>
+          <p>Scripts de bastidor, usados só durante a investigação dos dados: olhar os
+          cabeçalhos de cada CSV, comparar categorias entre as 3 edições, validar a Silver.
+          Não fazem parte do resultado final — são ferramentas de depuração que geraram os
+          relatórios em <span class="path">docs/_headers_*.txt</span> etc.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="folder">
+      <summary><span><span class="mono">notebooks/</span> <span class="folder-sub">— o que rodou de verdade dentro da AWS</span></span><span class="chev">▸</span></summary>
+      <div class="folder-body">
+        <p class="folder-intro">Os 4 arquivos <span class="path">.ipynb</span> aqui são
+        <strong>gerados</strong> por <span class="path">src/build_notebooks.py</span> — você
+        não edita eles diretamente, edita o gerador e roda ele de novo. Mas foram estes 4
+        arquivos, carregados um por um no AWS Glue Studio, que viraram os 4 jobs reais.</p>
+
+        <div class="file">
+          <div class="file-head"><span class="path">01_bronze/bronze_glue_notebook.ipynb</span><span class="tag gen">gerado</span><span class="tag aws">rodou como job_bronze_tech_challenge</span></div>
+          <p>Lê os 3 CSVs brutos do S3 por caminho exato (sem Crawler — ver seção de
+          decisões) e grava 3 tabelas Bronze, uma por edição da pesquisa.</p>
+        </div>
+        <div class="file">
+          <div class="file-head"><span class="path">02_silver/silver_glue_notebook.ipynb</span><span class="tag gen">gerado</span><span class="tag aws">rodou como job_silver_tech_challenge</span></div>
+          <p>A versão PySpark da harmonização — o mesmo raciocínio de
+          <span class="path">silver_harmonization.py</span>, só que lendo as tabelas Bronze
+          reais e rodando dentro do Spark da AWS. É aqui que os dois bugs de mapeamento de
+          coluna e de rótulo de tecnologia foram corrigidos.</p>
+        </div>
+        <div class="file">
+          <div class="file-head"><span class="path">03_gold/gold_glue_notebook.ipynb</span><span class="tag gen">gerado</span><span class="tag aws">rodou como job_gold_tech_challenge</span></div>
+          <p>Agrega a Silver real nas 7 tabelas de negócio.</p>
+        </div>
+        <div class="file">
+          <div class="file-head"><span class="path">04_eda/eda_glue_notebook.ipynb</span><span class="tag gen">gerado</span><span class="tag aws">rodou como job_eda_tech_challenge</span></div>
+          <p>Lê as 7 tabelas Gold reais e desenha os 11 gráficos <em>dentro do próprio
+          notebook da AWS</em>, usando o comando <code>%matplot plt</code> — é a confirmação
+          visual de que os números batem antes de levar para o relatório.</p>
+        </div>
+        <div class="file">
+          <div class="file-head"><span class="path">05_analytics_athena/*.sql</span><span class="tag aws">7 arquivos, rodam no Athena</span></div>
+          <p>Não são notebooks — são scripts SQL soltos, um por pergunta de negócio do
+          desafio (<span class="path">q1_estrutura_mercado.sql</span> até
+          <span class="path">q7_oportunidades_e_desafios.sql</span>). Rodam direto no console
+          do Amazon Athena contra as tabelas <span class="path">gold_*</span>.</p>
+          <div class="bug-box"><b>Bug encontrado e corrigido aqui</b>
+          <span class="path">q4_tecnologias_mais_adotadas.sql</span> filtrava nomes de
+          tecnologia em maiúsculas (<code>'Python'</code>), mas os dados reais são sempre
+          minúsculos (<code>'python'</code>) — a consulta rodava sem erro nenhum, só que
+          devolvia zero linhas. Corrigido no arquivo.</div>
+        </div>
+      </div>
+    </details>
+
+    <details class="folder">
+      <summary><span><span class="mono">presentation/</span> <span class="folder-sub">— a Entrega 1 (material executivo, em PDF)</span></span><span class="chev">▸</span></summary>
+      <div class="folder-body">
+        <p class="folder-intro">O desafio permite entregar em PowerPoint OU PDF — o grupo trocou
+        de um PowerPoint (poucos slides, principalmente imagens) para um relatório de verdade em
+        PDF (capa, sumário, resumo executivo, introdução, metodologia, análise, diagnóstico,
+        recomendações, conclusão, referências), com bem mais texto e storytelling.</p>
+        <div class="file">
+          <div class="file-head"><span class="path">build_relatorio.py</span><span class="tag local">local, Python</span></div>
+          <p>Monta o relatório inteiro em código, usando a biblioteca <code>python-docx</code>:
+          todo o texto, as tabelas e os gráficos (como figuras numeradas, com legenda e fonte)
+          estão escritos aqui, seção por seção. Gera um <span class="path">.docx</span> editável.</p>
+          <p class="why"><strong>Por que não escrever direto no Word:</strong> assim, qualquer
+          correção de número (como as que aconteceram nesta mesma sessão) não exige reabrir e
+          editar manualmente um documento de 23 páginas — só mudar o texto/número neste arquivo
+          e rodar <code>python build_relatorio.py</code> de novo.</p>
+        </div>
+        <div class="file">
+          <div class="file-head"><span class="path">charts/*.png</span><span class="tag gen">gerado por eda_charts_aws.py</span></div>
+          <p>As 11 imagens finais que o <span class="path">build_relatorio.py</span> insere como
+          figuras no relatório.</p>
+        </div>
+        <div class="file">
+          <div class="file-head"><span class="path">material_executivo.docx</span> / <span class="path">.pdf</span><span class="tag gen">gerado por build_relatorio.py</span></div>
+          <p>A Entrega 1 oficial do desafio — o <span class="path">.pdf</span> é o que se entrega;
+          o <span class="path">.docx</span> fica disponível para qualquer ajuste manual de
+          última hora antes de reexportar.</p>
+        </div>
+        <div class="file">
+          <div class="file-head"><span class="path">_obsoleto/</span><span class="tag local">arquivado</span></div>
+          <p>A versão anterior em PowerPoint, guardada aqui só como histórico — não é mais a
+          entrega oficial. O script que a gerava (<span class="path">build_deck.js</span>) e as
+          dependências de Node.js foram removidos, já que não servem mais a nenhum propósito.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="folder">
+      <summary><span><span class="mono">diagrams/</span> <span class="folder-sub">— a Entrega 2 (arquitetura)</span></span><span class="chev">▸</span></summary>
+      <div class="folder-body">
+        <div class="file">
+          <div class="file-head"><span class="path">arquitetura_solucao.drawio</span><span class="tag local">editável no app.diagrams.net</span></div>
+          <p>A Entrega 2 oficial — o diagrama da arquitetura AWS, desenhado em conjunto com o
+          time diretamente no Draw.io (formato que o desafio pede).</p>
+        </div>
+        <div class="file">
+          <div class="file-head"><span class="path">arquitetura_solucao.png</span><span class="tag local">exportado do .drawio</span></div>
+          <p>A imagem embutida no relatório (Seção 2). Gerada com o próprio recurso de exportação
+          do Draw.io (Arquivo &gt; Exportar como &gt; PNG) — não por um script separado.</p>
+          <p class="why"><strong>Por que não existe mais um script Python para gerar essa
+          imagem:</strong> havia uma versão anterior (<span class="path">_gerar_png.py</span>)
+          que redesenhava o mesmo diagrama do zero em matplotlib, só para produzir um PNG (já
+          que o PowerPoint não conseguia abrir um <span class="path">.drawio</span> direto). Isso
+          criava duas fontes de verdade do mesmo diagrama que podiam ficar dessincronizadas — e
+          de fato ficaram (a versão matplotlib ainda mostrava um tema claro depois que o
+          <span class="path">.drawio</span> já tinha sido redesenhado com tema escuro). Exportar
+          o PNG direto do próprio Draw.io elimina essa duplicação: há só uma fonte de verdade.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="folder">
+      <summary><span><span class="mono">docs/</span> <span class="folder-sub">— guias e anotações</span></span><span class="chev">▸</span></summary>
+      <div class="folder-body">
+        <div class="file">
+          <div class="file-head"><span class="path">GUIA_PARA_INICIANTES_AWS.md</span></div>
+          <p>O guia completo sobre conceitos de AWS, o fluxo do projeto e o checklist contra
+          o PDF oficial do desafio.</p>
+        </div>
+        <div class="file">
+          <div class="file-head"><span class="path">_eda_achados.txt</span><span class="tag gen">gerado por eda_charts_aws.py</span></div>
+          <p>Lista em texto simples das frases de "achado" (ex: "61% dos profissionais estão
+          no Sudeste") — escrita automaticamente toda vez que o script de gráficos roda.</p>
+        </div>
+        <div class="file">
+          <div class="file-head"><span class="path">_headers_*.txt</span>, <span class="path">_diagnostico_categorias.txt</span>, <span class="path">_validacao_silver.txt</span></div>
+          <p>Anotações geradas pelos scripts de <span class="path">src/utils/</span> durante a
+          investigação dos dados — ficam aqui como referência caso precise reabrir a
+          investigação no futuro (ex: mapear uma 4ª edição da pesquisa).</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="folder">
+      <summary><span><span class="mono">data/raw/</span> <span class="folder-sub">— CSVs de referência do protótipo local</span></span><span class="chev">▸</span></summary>
+      <div class="folder-body">
+        <div class="file">
+          <div class="file-head"><span class="path">2023-2024/</span>, <span class="path">2024-2025/</span>, <span class="path">2025-2026/</span></div>
+          <p>Um CSV por edição, usados só pelo protótipo local (<span class="path">silver_harmonization.py</span>).
+          Não são os mesmos arquivos físicos que estão no bucket S3 real do time — por isso os
+          dois pipelines produzem números ligeiramente diferentes.</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <section id="decisoes">
+    <div class="section-eyebrow">Raciocínio</div>
+    <h2>As decisões que mais importam</h2>
+
+    <div class="decision">
+      <h3>Por que existem dois pipelines inteiros (local e AWS) em vez de um só?</h3>
+      <p>Rodar na AWS tem um custo de tempo real: o Spark demora 1-3 minutos para "ligar" a
+      cada notebook, e o AWS Academy Lab expira a cada 4 horas. Testar a lógica de
+      harmonização em pandas local, no próprio computador, é quase instantâneo. A estratégia
+      foi: acertar a lógica localmente primeiro, "traduzir" ela para PySpark nos notebooks, e
+      só então rodar de verdade na AWS.</p>
+      <p>O efeito colateral dessa estratégia é que os dois pipelines usam arquivos de origem
+      ligeiramente diferentes (os CSVs de referência locais vs. os CSVs reais do S3), então os
+      números finais divergem um pouco — por isso o material executivo final usa só os números
+      da AWS, nunca os do protótipo local.</p>
+    </div>
+
+    <div class="decision">
+      <h3>Por que não usar um Glue Crawler para a camada Bronze?</h3>
+      <p>Um Crawler é um robô que varre arquivos no S3 e descobre sozinho as colunas. O colega
+      de equipe já tinha criado um, apontando para os 3 CSVs juntos no mesmo prefixo do S3 —
+      só que ele amostrou apenas 1 dos 3 arquivos para adivinhar o formato (as 3 edições têm
+      cabeçalhos diferentes) e aplicou esse formato errado aos 3, gerando uma tabela quebrada
+      com 399 colunas sem nome (<code>col0</code>...<code>col398</code>).</p>
+      <p>O PDF oficial do desafio nunca menciona a palavra "Crawler" — só pede catalogação
+      "com o Glue Jobs". Por isso, a solução foi fazer o próprio notebook ler os 3 arquivos
+      por caminho exato e se catalogar sozinho, sem depender de nenhum Crawler.</p>
+    </div>
+
+    <div class="decision">
+      <h3>Por que as tabelas novas têm o prefixo <span class="path">tb_</span>?</h3>
+      <p>O colega já tinha criado, no mesmo banco de dados, tabelas chamadas <code>bronze</code>
+      e <code>silver</code> (as quebradas, do Crawler). Para não apagar nem sobrescrever o
+      trabalho dele, as tabelas novas usam nomes diferentes (<code>tb_bronze_*</code>,
+      <code>tb_silver_*</code>) — as duas convivem lado a lado no mesmo banco de dados sem
+      conflito.</p>
+    </div>
+
+    <div class="decision">
+      <h3>Os dois bugs reais encontrados durante a execução</h3>
+      <div class="bug-box"><b>Bug 1 — mapeamento de coluna</b>
+      O código inicial foi escrito olhando os CSVs de referência locais. Quando rodou contra
+      os arquivos reais do S3 (que têm um layout de coluna diferente), o gráfico de "cargo
+      mais comum" misturava cargos de verdade com respostas de outra pergunta (tempo de
+      experiência). Corrigido inspecionando os cabeçalhos reais e reconstruindo o mapeamento
+      de índices em <span class="path">src/build_notebooks.py</span>.</div>
+      <div class="bug-box"><b>Bug 2 — rótulos de tecnologia crus</b>
+      Depois do bug 1 corrigido, o gráfico de tecnologias mostrava nomes crus de coluna
+      (<code>c_4_c_3_python</code>) em vez de nomes limpos (<code>python</code>). A função que
+      limpa esses nomes só reconhecia o formato dos CSVs locais. Corrigida com uma regex mais
+      geral que cobre os dois formatos reais encontrados no S3.</div>
+    </div>
+  </section>
+
+  <section id="perguntas">
+    <div class="section-eyebrow">Dúvidas comuns</div>
+    <h2>Perguntas que você pode estar se fazendo</h2>
+
+    <details class="faq">
+      <summary>Se eu quiser só ver o resultado final, que arquivos eu abro?<span class="chev">+</span></summary>
+      <div class="faq-body">Só três: <span class="path">presentation/material_executivo.pdf</span>
+      (a entrega 1), <span class="path">diagrams/arquitetura_solucao.drawio</span> (a entrega
+      2) e a pasta <span class="path">notebooks/</span> (a entrega 3). Tudo o que está em
+      <span class="path">src/</span> é "código de apoio" que produziu essas 3 entregas — você
+      não precisa entender cada linha deles para entregar o desafio.</div>
+    </details>
+
+    <details class="faq">
+      <summary>Por que tem um script "local" e um "aws" fazendo quase a mesma coisa pros gráficos?<span class="chev">+</span></summary>
+      <div class="faq-body"><span class="path">eda_charts.py</span> é o rascunho (números
+      aproximados, do protótipo local). <span class="path">eda_charts_aws.py</span> é a versão
+      final e real (números conferidos no Athena). Se precisar mexer num gráfico do
+      relatório, é sempre o <span class="path">eda_charts_aws.py</span> que você edita.</div>
+    </details>
+
+    <details class="faq">
+      <summary>Onde estão os números que aparecem no relatório?<span class="chev">+</span></summary>
+      <div class="faq-body">Os números dos gráficos (barras, linhas) estão dentro de
+      <span class="path">src/eda_charts_aws.py</span>, em dicionários Python no topo de cada
+      bloco. Os números que aparecem como texto corrido no relatório (tipo "13.057
+      respondentes") estão em <span class="path">presentation/build_relatorio.py</span>.</div>
+    </details>
+
+    <details class="faq">
+      <summary>O que eu preciso rodar se quiser atualizar alguma coisa?<span class="chev">+</span></summary>
+      <div class="faq-body">Depende do que mudou. Só o texto do relatório →
+      edite <span class="path">build_relatorio.py</span> e rode
+      <code>python build_relatorio.py</code>. Um número de gráfico →
+      edite <span class="path">eda_charts_aws.py</span>, rode com Python, depois rode
+      <code>python build_relatorio.py</code> de novo (ele lê os PNGs mais novos). O diagrama →
+      edite <span class="path">arquitetura_solucao.drawio</span> em app.diagrams.net, exporte
+      como PNG, e rode <code>python build_relatorio.py</code> de novo. Em qualquer caso, depois
+      de gerar o <span class="path">.docx</span>, abra no Word e "Salvar como PDF" para atualizar
+      a entrega oficial. O passo a passo completo está no final do guia principal
+      (<span class="path">docs/GUIA_PARA_INICIANTES_AWS.md</span>).</div>
+    </details>
+
+    <details class="faq">
+      <summary>Por que os notebooks dentro de notebooks/ não são editados diretamente?<span class="chev">+</span></summary>
+      <div class="faq-body">Eles são — tecnicamente dá para abrir e editar o
+      <span class="path">.ipynb</span> direto. Mas como os 4 notebooks compartilham muita
+      lógica parecida (cada um lê o resultado do anterior), manter tudo num gerador único
+      (<span class="path">src/build_notebooks.py</span>) evita que uma correção seja aplicada
+      num notebook e esquecida nos outros 3 — foi assim, aliás, que os dois bugs puderam ser
+      corrigidos de forma consistente nas 4 etapas.</div>
+    </details>
+  </section>
+
+  <section id="referencia">
+    <div class="section-eyebrow">Para consulta rápida</div>
+    <h2>Tabela de referência</h2>
+    <div class="table-scroll">
+      <table class="ref">
+        <thead>
+          <tr><th>Arquivo</th><th>Roda onde</th><th>Edita à mão?</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="path">src/build_notebooks.py</td><td>Local (Python)</td><td>Sim — gera os 4 notebooks</td></tr>
+          <tr><td class="path">src/silver_harmonization.py</td><td>Local (Python)</td><td>Sim, se mudar o protótipo</td></tr>
+          <tr><td class="path">src/gold_builder.py</td><td>Local (Python)</td><td>Sim, se mudar o protótipo</td></tr>
+          <tr><td class="path">src/eda_charts.py</td><td>Local (Python)</td><td>Raramente (protótipo)</td></tr>
+          <tr><td class="path">src/eda_charts_aws.py</td><td>Local (Python)</td><td>Sim — fonte dos gráficos finais</td></tr>
+          <tr><td class="path">src/viz_style.py</td><td>Local (Python)</td><td>Só para mudar cores/estilo</td></tr>
+          <tr><td class="path">notebooks/01-04/*.ipynb</td><td>AWS Glue Studio</td><td>Não — gerados</td></tr>
+          <tr><td class="path">notebooks/05_analytics_athena/*.sql</td><td>Amazon Athena</td><td>Sim</td></tr>
+          <tr><td class="path">presentation/build_relatorio.py</td><td>Local (Python)</td><td>Sim — texto do relatório</td></tr>
+          <tr><td class="path">presentation/material_executivo.*</td><td>—</td><td>Não — gerado</td></tr>
+          <tr><td class="path">diagrams/arquitetura_solucao.drawio</td><td>app.diagrams.net</td><td>Sim</td></tr>
+          <tr><td class="path">diagrams/arquitetura_solucao.png</td><td>—</td><td>Não — exportado do .drawio</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    Gerado em 2026-10-19 para acompanhar a entrega do Tech Challenge Fase 3. Para os
+    conceitos de AWS do zero, veja <span class="path">docs/GUIA_PARA_INICIANTES_AWS.md</span>.
+  </footer>
+
+</div>

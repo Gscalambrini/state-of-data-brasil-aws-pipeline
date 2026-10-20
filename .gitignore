@@ -7,6 +7,11 @@
 /data/bronze/
 /data/silver/
 
+# Material interno (não faz parte da vitrine pública do projeto)
+/docs/GUIA_PARA_INICIANTES_AWS.md
+/presentation/_obsoleto/
+/presentation/material_executivo.docx
+
 # Python
 __pycache__/
 *.pyc

@@ -1,7 +1,10 @@
 """Gera o relatorio executivo (Entrega 1) em .docx, no mesmo formato de um
 relatorio tecnico-cientifico (capa, sumario, resumo executivo, introducao,
 metodologia, analise, diagnostico, recomendacoes, conclusao, referencias,
-anexos) usado como referencia pelo grupo na Fase 1.
+anexos) usado como referencia pelo grupo na Fase 1, formatado de acordo com
+a ABNT NBR 14724 (apresentacao de trabalhos academicos): fonte Arial 12,
+espacamento 1,5 no corpo do texto, margens 3/2/3/2 cm e numeracao de pagina
+no cabecalho, alinhada a direita.
 
 Diferenca em relacao ao material anterior (PowerPoint): este arquivo e um
 DOCUMENTO de texto corrido com storytelling completo, nao um conjunto de
@@ -14,8 +17,12 @@ Saida: material_executivo.docx (neste mesmo diretorio)
 
 Depois de gerar o .docx, abra no Word e atualize o Sumario (botao direito
 sobre o sumario > Atualizar campo > Atualizar o indice inteiro) antes de
-exportar/salvar como PDF -- ou use o passo de automacao via PowerShell
-descrito em docs/GUIA_PARA_INICIANTES_AWS.md, que faz isso automaticamente.
+exportar/salvar como PDF -- ou automatize via COM (PowerShell):
+  $app = New-Object -ComObject Word.Application
+  $doc = $app.Documents.Open("<caminho completo>\material_executivo.docx")
+  $doc.Fields.Update(); $doc.TablesOfContents | % { $_.Update() }
+  $doc.SaveAs([ref]"<caminho completo>\material_executivo.pdf", [ref]17)
+  $doc.Close(); $app.Quit()
 """
 from pathlib import Path
 
@@ -37,7 +44,8 @@ GRAY = RGBColor(0x52, 0x51, 0x4E)
 MAGENTA_HEX = "ED145B"
 LIGHT_PINK_HEX = "FDE7EE"
 
-FONT_NAME = "Calibri"
+FONT_NAME = "Arial"
+BODY_SIZE = Pt(12)
 
 # ---------------------------------------------------------------------------
 # Low-level helpers (python-docx nao expoe tudo via API publica)
@@ -138,26 +146,27 @@ def body(document, text, *, lead_bold=None, italic=False, space_after=10):
     pf.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
     pf.first_line_indent = Cm(1.25)
     pf.space_after = Pt(space_after)
-    pf.line_spacing = 1.15
+    pf.line_spacing = 1.5
     if lead_bold:
         r = p.add_run(lead_bold)
         r.bold = True
         r.italic = italic
         r.font.name = FONT_NAME
-        r.font.size = Pt(11)
+        r.font.size = BODY_SIZE
     r = p.add_run(text)
     r.italic = italic
     r.font.name = FONT_NAME
-    r.font.size = Pt(11)
+    r.font.size = BODY_SIZE
     return p
 
 
 def bullet(document, text):
     p = document.add_paragraph(style="List Bullet")
     p.paragraph_format.space_after = Pt(4)
+    p.paragraph_format.line_spacing = 1.5
     r = p.add_run(text)
     r.font.name = FONT_NAME
-    r.font.size = Pt(11)
+    r.font.size = BODY_SIZE
     return p
 
 
@@ -181,7 +190,7 @@ def heading2(document, number, text):
     p.paragraph_format.space_after = Pt(6)
     r = p.add_run(f"{number} {text}" if number else text)
     r.font.name = FONT_NAME
-    r.font.size = Pt(12.5)
+    r.font.size = Pt(13)
     r.font.bold = True
     r.font.color.rgb = DARK
     return p
@@ -230,7 +239,7 @@ def kpi_table(document, rows, col_widths=(8.0, 7.0)):
                 r.font.bold = True
                 r.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
                 r.font.name = FONT_NAME
-                r.font.size = Pt(10.5)
+                r.font.size = Pt(11)
     for i, (k, v) in enumerate(rows, start=1):
         cells = table.rows[i].cells
         cells[0].text = k
@@ -240,7 +249,7 @@ def kpi_table(document, rows, col_widths=(8.0, 7.0)):
                 p.alignment = WD_ALIGN_PARAGRAPH.LEFT if j == 0 else WD_ALIGN_PARAGRAPH.CENTER
                 for r in p.runs:
                     r.font.name = FONT_NAME
-                    r.font.size = Pt(10.5)
+                    r.font.size = Pt(11)
             if i % 2 == 0:
                 set_cell_background(c, "F8F8F8")
     for col, w in zip(table.columns, col_widths):
@@ -259,33 +268,29 @@ doc = Document()
 # --- estilo base -----------------------------------------------------------
 normal = doc.styles["Normal"]
 normal.font.name = FONT_NAME
-normal.font.size = Pt(11)
+normal.font.size = BODY_SIZE
 section = doc.sections[0]
 section.page_width = Cm(21.0)
 section.page_height = Cm(29.7)
+# Margens conforme ABNT NBR 14724: esquerda/superior 3 cm, direita/inferior 2 cm
 section.left_margin = Cm(3.0)
 section.right_margin = Cm(2.0)
-section.top_margin = Cm(2.5)
+section.top_margin = Cm(3.0)
 section.bottom_margin = Cm(2.0)
 section.different_first_page_header_footer = True
 
-# rodape (paginas internas): texto + numero de pagina, igual ao padrao FIAP
-footer_p = section.footer.paragraphs[0]
-footer_p.text = ""
-footer_p.alignment = WD_ALIGN_PARAGRAPH.LEFT
-r = footer_p.add_run("FIAP · Tech Challenge Fase 3 · State of Data Brasil 2023-2026")
-r.font.size = Pt(9)
-r.font.color.rgb = GRAY
-r.font.name = FONT_NAME
-tab_stops = footer_p.paragraph_format.tab_stops
-tab_stops.add_tab_stop(Cm(16.0))
-footer_p.add_run("\t")
-add_page_number_field(footer_p)
-for run in footer_p.runs[-1:]:
-    run.font.size = Pt(9)
+# cabecalho (paginas internas): apenas o numero de pagina, alinhado a
+# direita, conforme ABNT (a capa conta mas nao exibe numero)
+header_p = section.header.paragraphs[0]
+header_p.text = ""
+header_p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+add_page_number_field(header_p)
+for run in header_p.runs:
+    run.font.size = Pt(10)
     run.font.color.rgb = GRAY
     run.font.name = FONT_NAME
-# pagina de capa sem rodape
+# pagina de capa sem cabecalho nem rodape
+section.first_page_header.paragraphs[0].text = ""
 section.first_page_footer.paragraphs[0].text = ""
 
 # ===========================================================================
@@ -399,7 +404,7 @@ body(
     doc,
     "Este relatório analisa o mercado brasileiro de profissionais de Dados e "
     "Inteligência Artificial, a partir da pesquisa State of Data Brasil "
-    "(comunidade Data Hackers, em parceria com a Bain & Company), para "
+    "(DATA HACKERS, 2026), para "
     "responder a uma pergunta central: como uma Instituição Financeira de "
     "grande porte deve direcionar sua estratégia de contratação, capacitação "
     "e investimento em tecnologia para expandir sua área de Dados, Analytics "
@@ -492,8 +497,8 @@ body(
 body(
     doc,
     "Para apoiar essa decisão, este relatório utiliza a pesquisa State of "
-    "Data Brasil, realizada anualmente pela comunidade Data Hackers em "
-    "parceria com a Bain & Company — uma das mais completas fontes de "
+    "Data Brasil, realizada anualmente pela comunidade Data Hackers "
+    "(DATA HACKERS, 2026) — uma das mais completas fontes de "
     "informação sobre o perfil dos profissionais de Dados no país, reunindo "
     "dados sobre formação, remuneração, tecnologias utilizadas, modelo de "
     "trabalho, diversidade e adoção de Inteligência Artificial. Foram "
@@ -557,7 +562,7 @@ body(
     "profissionais de Dados e Tecnologia no Brasil, coletadas pela pesquisa "
     "State of Data Brasil em três edições (2023-2024, 2024-2025 e "
     "2025-2026), disponibilizadas publicamente pela comunidade Data Hackers "
-    "no Kaggle. Os dados contemplam informações demográficas, cargo atual, "
+    "no Kaggle (DATA HACKERS, 2026). Os dados contemplam informações demográficas, cargo atual, "
     "senioridade, faixa salarial, região, modelo de trabalho, tecnologias "
     "utilizadas e uso de Inteligência Artificial."
 )
@@ -571,8 +576,9 @@ body(
     "(Bronze, Silver e Gold). O diagrama a seguir, desenhado em conjunto com "
     "a equipe, ilustra o fluxo completo: os três arquivos brutos da pesquisa "
     "são ingeridos no Amazon S3, processados por notebooks do AWS Glue "
-    "(Apache Spark) em cada camada, catalogados automaticamente no AWS Glue "
-    "Data Catalog, consultados via Amazon Athena, e finalmente consolidados "
+    "(AMAZON WEB SERVICES, 2026b) (Apache Spark) em cada camada, catalogados "
+    "automaticamente no AWS Glue Data Catalog, consultados via Amazon Athena "
+    "(AMAZON WEB SERVICES, 2026a), e finalmente consolidados "
     "neste relatório executivo."
 )
 add_figure(
@@ -998,34 +1004,34 @@ body(
 heading1(doc, 8, "REFERÊNCIAS")
 
 refs = [
-    ("DATA HACKERS.", " State of Data Brazil Dataset.", " Disponível em: https://www.kaggle.com/datasets/datahackers/state-of-data-brazil. Acesso em: 19 out. 2026."),
-    ("BAIN & COMPANY.", " Prescription for cutting costs.", " 2001. Disponível em: https://media.bain.com/Images/BB_Prescription_cutting_costs.pdf. Acesso em: 19 out. 2026."),
-    ("AMAZON WEB SERVICES.", " AWS Glue Developer Guide.", " Disponível em: https://docs.aws.amazon.com/glue/latest/dg/. Acesso em: 18 out. 2026."),
-    ("AMAZON WEB SERVICES.", " Amazon Athena User Guide.", " Disponível em: https://docs.aws.amazon.com/athena/latest/ug/. Acesso em: 19 out. 2026."),
-    ("REICHHELD, Frederick F.; SASSER JR., W. Earl.", " Zero defections: quality comes to services.", " Harvard Business Review, set./out. 1990. Disponível em: https://hbr.org/1990/09/zero-defections-quality-comes-to-services. Acesso em: 19 out. 2026."),
+    ("AMAZON WEB SERVICES.", " Amazon Athena User Guide.", " 2026a. Disponível em: https://docs.aws.amazon.com/athena/latest/ug/. Acesso em: 19 out. 2026."),
+    ("AMAZON WEB SERVICES.", " AWS Glue Developer Guide.", " 2026b. Disponível em: https://docs.aws.amazon.com/glue/latest/dg/. Acesso em: 18 out. 2026."),
+    ("DATA HACKERS.", " State of Data Brazil Dataset.", " 2026. Disponível em: https://www.kaggle.com/datasets/datahackers/state-of-data-brazil. Acesso em: 19 out. 2026."),
 ]
+# Referencias conforme ABNT NBR 6023: alinhamento a esquerda (sem recuo),
+# espacamento simples dentro de cada referencia, espaco maior entre elas.
 for lead, mid, rest in refs:
     p = doc.add_paragraph()
     pf = p.paragraph_format
-    pf.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-    pf.space_after = Pt(10)
-    pf.line_spacing = 1.15
+    pf.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    pf.space_after = Pt(12)
+    pf.line_spacing = 1.0
     r = p.add_run(lead)
     r.font.name = FONT_NAME
-    r.font.size = Pt(11)
+    r.font.size = BODY_SIZE
     r = p.add_run(mid)
     r.italic = True
     r.font.name = FONT_NAME
-    r.font.size = Pt(11)
+    r.font.size = BODY_SIZE
     r = p.add_run(rest)
     r.font.name = FONT_NAME
-    r.font.size = Pt(11)
+    r.font.size = BODY_SIZE
 
 # ===========================================================================
 # ANEXOS
 # ===========================================================================
 heading1(doc, None, "ANEXOS")
-body(doc, "Repositório do projeto (notebooks, scripts SQL e código-fonte deste relatório): [inserir link do repositório].", space_after=8)
+body(doc, "Repositório do projeto (notebooks, scripts SQL e código-fonte deste relatório): https://github.com/Gscalambrini/state-of-data-brasil-aws-pipeline.", space_after=8)
 body(doc, "Diagrama de arquitetura editável (Draw.io): diagrams/arquitetura_solucao.drawio.", space_after=8)
 body(doc, "Scripts de consulta analítica (Amazon Athena): notebooks/05_analytics_athena/*.sql.", space_after=8)
 

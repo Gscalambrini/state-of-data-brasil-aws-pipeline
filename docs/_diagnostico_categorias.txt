@@ -1,0 +1,457 @@
+
+####################################################################################################
+# EDICAO 2023-2024
+####################################################################################################
+Shape: (5293, 399)
+
+--- genero  (coluna [3]: "('P1_b ', 'Genero')") ---
+('P1_b ', 'Genero')
+Masculino               3975
+Feminino                1293
+Prefiro não informar      16
+Outro                      9
+
+--- cor_raca_etnia  (coluna [4]: "('P1_c ', 'Cor/raca/etnia')") ---
+('P1_c ', 'Cor/raca/etnia')
+Branca                  3414
+Parda                   1281
+Preta                    387
+Amarela                  147
+Prefiro não informar      34
+Outra                     18
+Indígena                  12
+
+--- pcd  (coluna [5]: "('P1_d ', 'PCD')") ---
+('P1_d ', 'PCD')
+Não                     5156
+Sim                      111
+Prefiro não informar      26
+
+--- regiao  (coluna [24]: "('P1_i_2 ', 'Regiao onde mora')") ---
+('P1_i_2 ', 'Regiao onde mora')
+Sudeste         3173
+Sul              961
+Nordeste         608
+Centro-oeste     344
+                 124
+Norte             83
+
+--- nivel_ensino  (coluna [27]: "('P1_l ', 'Nivel de Ensino')") ---
+('P1_l ', 'Nivel de Ensino')
+Pós-graduação                 1818
+Graduação/Bacharelado         1798
+Estudante de Graduação         678
+Mestrado                       676
+Doutorado ou Phd               210
+Não tenho graduação formal     105
+Prefiro não informar             8
+
+--- situacao_trabalho  (coluna [29]: "('P2_a ', 'Qual sua situação atual de trabalho?')") ---
+('P2_a ', 'Qual sua situação atual de trabalho?')
+Empregado (CLT)                                                    3604
+Empreendedor ou Empregado (CNPJ)                                    555
+Desempregado, buscando recolocação                                  361
+Estagiário                                                          207
+Servidor Público                                                    146
+Vivo no Brasil e trabalho remoto para empresa de fora do Brasil     116
+Somente Estudante (graduação)                                        78
+Vivo fora do Brasil e trabalho para empresa de fora do Brasil        64
+Trabalho na área Acadêmica/Pesquisador                               63
+Freelancer                                                           51
+Somente Estudante (pós-graduação)                                    28
+Desempregado e não estou buscando recolocação                        10
+Prefiro não informar                                                 10
+
+--- gestor  (coluna [32]: "('P2_d ', 'Gestor?')") ---
+('P2_d ', 'Gestor?')
+0    3857
+1     896
+      540
+
+--- nivel_senioridade  (coluna [35]: "('P2_g ', 'Nivel')") ---
+('P2_g ', 'Nivel')
+          1436
+Sênior    1419
+Pleno     1392
+Júnior    1046
+
+--- faixa_salarial  (coluna [36]: "('P2_h ', 'Faixa salarial')") ---
+('P2_h ', 'Faixa salarial')
+de R$ 8.001/mês a R$ 12.000/mês     1026
+de R$ 4.001/mês a R$ 6.000/mês       745
+de R$ 12.001/mês a R$ 16.000/mês     650
+de R$ 6.001/mês a R$ 8.000/mês       637
+                                     540
+de R$ 3.001/mês a R$ 4.000/mês       352
+de R$ 16.001/mês a R$ 20.000/mês     328
+de R$ 2.001/mês a R$ 3.000/mês       288
+de R$ 1.001/mês a R$ 2.000/mês       215
+de R$ 20.001/mês a R$ 25.000/mês     195
+de R$ 25.001/mês a R$ 30.000/mês     128
+de R$ 30.001/mês a R$ 40.000/mês      86
+Acima de R$ 40.001/mês                72
+Menos de R$ 1.000/mês                 30
+de R$ 101/mês a R$ 2.000/mês           1
+
+--- tempo_exp_dados  (coluna [37]: "('P2_i ', 'Quanto tempo de experiência na área de dados você tem?')") ---
+('P2_i ', 'Quanto tempo de experiência na área de dados você tem?')
+de 1 a 2 anos                             1201
+de 3 a 4 anos                             1109
+Mais de 10 anos                            557
+                                           540
+Menos de 1 ano                             476
+de 4 a 6 anos                              463
+de 7 a 10 anos                             429
+de 5 a 6 anos                              356
+Não tenho experiência na área de dados     162
+
+--- modelo_trabalho_atual  (coluna [62]: "('P2_r ', 'Atualmente qual a sua forma de trabalho?')") ---
+('P2_r ', 'Atualmente qual a sua forma de trabalho?')
+Modelo 100% remoto                                                                                                2201
+Modelo híbrido flexível (o funcionário tem liberdade para escolher quando estar no escritório presencialmente)     972
+Modelo híbrido com dias fixos de trabalho presencial                                                               790
+Modelo 100% presencial                                                                                             790
+                                                                                                                   540
+
+--- empresa_prioriza_ia_generativa  (coluna [103]: "('P3_e ', 'AI Generativa é uma prioridade em sua empresa?')") ---
+('P3_e ', 'AI Generativa é uma prioridade em sua empresa?')
+                                                                                                                                                4397
+Mais ou menos... É uma das várias iniciativas que estamos impulsionando, mas não é uma prioridade (iniciativas isoladas e pouco foco).           275
+Não é uma iniciativa que estamos focando e não tem sido uma prioridade.                                                                          258
+Sim, está entre nossas principais prioridades para os próximos 2-4 anos (com discussões de iniciativas e orçamentos de curto a médio prazo).     214
+Sim, é nossa principal prioridade como empresa (com foco executivo significativo e alocação de orçamento relevante).                             110
+Não sei opinar sobre esse assunto.                                                                                                                39
+
+--- uso_ia_generativa_individual  (coluna [238]: "('P4_m ', 'Utiliza ChatGPT ou LLMs no trabalho?')") ---
+('P4_m ', 'Utiliza ChatGPT ou LLMs no trabalho?')
+Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia.                                                                                                                                                                         2219
+                                                                                                                                                                                                                                                                                          1521
+Não utilizo nenhum tipo de solução de IA Generativa para melhorar a produtividade no dia a dia.                                                                                                                                                                                            718
+Utilizo soluções no estilo "Copilot" (exemplo: Github Copilot, Amazon CodeWhisperer ou ChatGPT Plus) para ter mais produtividade no dia a dia.                                                                                                                                             187
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e pago do meu próprio bolso.                                                                                                                                                                       174
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e a empresa em que trabalho paga pela solução.                                                                                                                                                     156
+Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia., Utilizo soluções no estilo "Copilot" (exemplo: Github Copilot, Amazon CodeWhisperer ou ChatGPT Plus) para ter mais produtividade no dia a dia.                           80
+Utilizo soluções no estilo "Copilot" (exemplo: Github Copilot, Amazon CodeWhisperer ou ChatGPT Plus) para ter mais produtividade no dia a dia., Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia.                           52
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e pago do meu próprio bolso., Utilizo soluções no estilo "Copilot" (exemplo: Github Copilot, Amazon CodeWhisperer ou ChatGPT Plus) para ter mais produtividade no dia a dia.                        48
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e a empresa em que trabalho paga pela solução., Utilizo soluções no estilo "Copilot" (exemplo: Github Copilot, Amazon CodeWhisperer ou ChatGPT Plus) para ter mais produtividade no dia a dia.      41
+Utilizo soluções no estilo "Copilot" (exemplo: Github Copilot, Amazon CodeWhisperer ou ChatGPT Plus) para ter mais produtividade no dia a dia., Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e pago do meu próprio bolso.                        20
+Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia., Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e a empresa em que trabalho paga pela solução.                                   15
+Utilizo soluções no estilo "Copilot" (exemplo: Github Copilot, Amazon CodeWhisperer ou ChatGPT Plus) para ter mais produtividade no dia a dia., Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e a empresa em que trabalho paga pela solução.      15
+Não utilizo nenhum tipo de solução de IA Generativa para melhorar a produtividade no dia a dia., Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia.                                                                          13
+Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia., Não utilizo nenhum tipo de solução de IA Generativa para melhorar a produtividade no dia a dia.                                                                           8
+Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia., Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e pago do meu próprio bolso.                                                      7
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e pago do meu próprio bolso., Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e a empresa em que trabalho paga pela solução.                                 6
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e a empresa em que trabalho paga pela solução., Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia.                                    4
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e pago do meu próprio bolso., Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia.                                                      3
+Não utilizo nenhum tipo de solução de IA Generativa para melhorar a produtividade no dia a dia., Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e pago do meu próprio bolso.                                                                        2
+Não utilizo nenhum tipo de solução de IA Generativa para melhorar a produtividade no dia a dia., Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e a empresa em que trabalho paga pela solução.                                                      2
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e a empresa em que trabalho paga pela solução., Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e pago do meu próprio bolso.                                 1
+Não utilizo nenhum tipo de solução de IA Generativa para melhorar a produtividade no dia a dia., Utilizo soluções no estilo "Copilot" (exemplo: Github Copilot, Amazon CodeWhisperer ou ChatGPT Plus) para ter mais produtividade no dia a dia.                                              1
+
+####################################################################################################
+# EDICAO 2024-2025
+####################################################################################################
+Shape: (5217, 403)
+
+--- genero  (coluna [4]: '1.b_genero') ---
+1.b_genero
+Masculino               3968
+Feminino                1226
+Prefiro não informar      15
+Outro                      8
+
+--- cor_raca_etnia  (coluna [5]: '1.c_cor/raca/etnia') ---
+1.c_cor/raca/etnia
+Branca                  3478
+Parda                   1180
+Preta                    352
+Amarela                  155
+Prefiro não informar      37
+Indígena                  10
+Outra                      5
+
+--- pcd  (coluna [6]: '1.d_pcd') ---
+1.d_pcd
+Não                     5037
+Sim                      152
+Prefiro não informar      28
+
+--- vive_no_brasil  (coluna [26]: '1.g_vive_no_brasil') ---
+1.g_vive_no_brasil
+TRUE     5078
+FALSE     139
+
+--- regiao  (coluna [22]: '1.i.2_regiao_onde_mora') ---
+1.i.2_regiao_onde_mora
+Sudeste         3132
+Sul             1031
+Nordeste         516
+Centro-oeste     332
+                 142
+Norte             64
+
+--- nivel_ensino  (coluna [31]: '1.l_nivel_de_ensino') ---
+1.l_nivel_de_ensino
+Pós-graduação                 1943
+Graduação/Bacharelado         1712
+Mestrado                       662
+Estudante de Graduação         590
+Doutorado ou Phd               216
+Não tenho graduação formal      86
+Prefiro não informar             8
+
+--- situacao_trabalho  (coluna [33]: '2.a_situação_de_trabalho') ---
+2.a_situação_de_trabalho
+Empregado (CLT)                                                    3783
+Empreendedor ou Empregado (CNPJ)                                    494
+Desempregado, buscando recolocação                                  205
+Estagiário                                                          186
+Vivo no Brasil e trabalho remoto para empresa de fora do Brasil     131
+Servidor Público                                                    124
+Vivo fora do Brasil e trabalho para empresa de fora do Brasil        77
+Somente Estudante (graduação)                                        68
+Trabalho na área Acadêmica/Pesquisador                               56
+Freelancer                                                           41
+Somente Estudante (pós-graduação)                                    25
+Prefiro não informar                                                 16
+Desempregado e não estou buscando recolocação                        11
+
+--- gestor  (coluna [36]: '2.d_atua_como_gestor') ---
+2.d_atua_como_gestor
+FALSE    3818
+TRUE     1045
+          354
+
+--- satisfeito  (coluna [43]: '2.k_satisfeito_atualmente') ---
+2.k_satisfeito_atualmente
+TRUE     3336
+FALSE    1527
+          354
+
+--- nivel_senioridade  (coluna [39]: '2.g_nivel') ---
+2.g_nivel
+Sênior    1573
+          1399
+Pleno     1377
+Júnior     868
+
+--- faixa_salarial  (coluna [40]: '2.h_faixa_salarial') ---
+2.h_faixa_salarial
+de R$ 8.001/mês a R$ 12.000/mês     1080
+de R$ 12.001/mês a R$ 16.000/mês     716
+de R$ 6.001/mês a R$ 8.000/mês       656
+de R$ 4.001/mês a R$ 6.000/mês       593
+de R$ 16.001/mês a R$ 20.000/mês     456
+                                     354
+de R$ 3.001/mês a R$ 4.000/mês       270
+de R$ 20.001/mês a R$ 25.000/mês     246
+de R$ 2.001/mês a R$ 3.000/mês       237
+de R$ 25.001/mês a R$ 30.000/mês     159
+de R$ 30.001/mês a R$ 40.000/mês     158
+de R$ 1.001/mês a R$ 2.000/mês       155
+Acima de R$ 40.001/mês               104
+Menos de R$ 1.000/mês                 33
+
+--- tempo_exp_dados  (coluna [41]: '2.i_tempo_de_experiencia_em_dados') ---
+2.i_tempo_de_experiencia_em_dados
+de 3 a 4 anos                             1386
+de 1 a 2 anos                              944
+de 5 a 6 anos                              830
+Mais de 10 anos                            585
+de 7 a 10 anos                             542
+                                           354
+Menos de 1 ano                             346
+Não tenho experiência na área de dados     230
+
+--- modelo_trabalho_atual  (coluna [70]: '2.r_modelo_de_trabalho_atual') ---
+2.r_modelo_de_trabalho_atual
+Modelo 100% remoto                                                                                                2222
+Modelo híbrido flexível (o funcionário tem liberdade para escolher quando estar no escritório presencialmente)     999
+Modelo híbrido com dias fixos de trabalho presencial                                                               850
+Modelo 100% presencial                                                                                             792
+                                                                                                                   354
+
+--- empresa_prioriza_ia_generativa  (coluna [112]: '3.e_ai_generativa_e_llm_é_uma_prioridade?') ---
+3.e_ai_generativa_e_llm_é_uma_prioridade?
+                                                                                                                                                           4172
+Sim, está entre nossas principais prioridades para os próximos 2-4 anos (com discussões de iniciativas e orçamentos de curto a médio prazo).                325
+Mais ou menos... É uma das várias iniciativas que estamos impulsionando, mas não é uma prioridade (tratam-se de iniciativas isoladas e com pouco foco).     301
+Sim, é nossa principal prioridade como empresa (com foco executivo significativo e alocação de orçamento relevante).                                        235
+Não é uma iniciativa que estamos focando e não tem sido uma prioridade.                                                                                     155
+Não sei opinar sobre esse assunto.                                                                                                                           29
+
+--- uso_ia_generativa_individual  (coluna [242]: '4.m_usa_chatgpt_ou_copilot_no_trabalho?') ---
+4.m_usa_chatgpt_ou_copilot_no_trabalho?
+Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia.                                                                                                                                                                         1629
+                                                                                                                                                                                                                                                                                          1598
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e a empresa em que trabalho paga pela solução.                                                                                                                                                     389
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e pago do meu próprio bolso.                                                                                                                                                                       383
+Utilizo soluções no estilo "Copilot" (exemplo: Github Copilot, Amazon CodeWhisperer ou ChatGPT Plus) para ter mais produtividade no dia a dia.                                                                                                                                             315
+Não utilizo nenhum tipo de solução de IA Generativa para melhorar a produtividade no dia a dia.                                                                                                                                                                                            224
+Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia., Utilizo soluções no estilo "Copilot" (exemplo: Github Copilot, Amazon CodeWhisperer ou ChatGPT Plus) para ter mais produtividade no dia a dia.                          145
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e a empresa em que trabalho paga pela solução., Utilizo soluções no estilo "Copilot" (exemplo: Github Copilot, Amazon CodeWhisperer ou ChatGPT Plus) para ter mais produtividade no dia a dia.     139
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e pago do meu próprio bolso., Utilizo soluções no estilo "Copilot" (exemplo: Github Copilot, Amazon CodeWhisperer ou ChatGPT Plus) para ter mais produtividade no dia a dia.                        90
+Utilizo soluções no estilo "Copilot" (exemplo: Github Copilot, Amazon CodeWhisperer ou ChatGPT Plus) para ter mais produtividade no dia a dia., Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia.                           77
+Utilizo soluções no estilo "Copilot" (exemplo: Github Copilot, Amazon CodeWhisperer ou ChatGPT Plus) para ter mais produtividade no dia a dia., Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e a empresa em que trabalho paga pela solução.      66
+Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia., Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e a empresa em que trabalho paga pela solução.                                   42
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e pago do meu próprio bolso., Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e a empresa em que trabalho paga pela solução.                                32
+Utilizo soluções no estilo "Copilot" (exemplo: Github Copilot, Amazon CodeWhisperer ou ChatGPT Plus) para ter mais produtividade no dia a dia., Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e pago do meu próprio bolso.                        24
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e a empresa em que trabalho paga pela solução., Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia.                                   21
+Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia., Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e pago do meu próprio bolso.                                                     13
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e pago do meu próprio bolso., Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia.                                                     11
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e a empresa em que trabalho paga pela solução., Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e pago do meu próprio bolso.                                 6
+Não utilizo nenhum tipo de solução de IA Generativa para melhorar a produtividade no dia a dia., Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia.                                                                           5
+Não utilizo nenhum tipo de solução de IA Generativa para melhorar a produtividade no dia a dia., Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e pago do meu próprio bolso.                                                                        2
+Não utilizo nenhum tipo de solução de IA Generativa para melhorar a produtividade no dia a dia., Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e a empresa em que trabalho paga pela solução.                                                      2
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, MidJourney etc) e pago do meu próprio bolso., Não utilizo nenhum tipo de solução de IA Generativa para melhorar a produtividade no dia a dia.                                                                        1
+Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia., Não utilizo nenhum tipo de solução de IA Generativa para melhorar a produtividade no dia a dia.                                                                           1
+Utilizo soluções no estilo "Copilot" (exemplo: Github Copilot, Amazon CodeWhisperer ou ChatGPT Plus) para ter mais produtividade no dia a dia., Não utilizo nenhum tipo de solução de IA Generativa para melhorar a produtividade no dia a dia.                                              1
+Não utilizo nenhum tipo de solução de IA Generativa para melhorar a produtividade no dia a dia., Utilizo soluções no estilo "Copilot" (exemplo: Github Copilot, Amazon CodeWhisperer ou ChatGPT Plus) para ter mais produtividade no dia a dia.                                              1
+
+####################################################################################################
+# EDICAO 2025-2026
+####################################################################################################
+Shape: (3495, 388)
+
+--- genero  (coluna [4]: '1.b_genero') ---
+1.b_genero
+Masculino               2707
+Feminino                 768
+Prefiro não informar      13
+Outro                      7
+
+--- cor_raca_etnia  (coluna [5]: '1.c_cor/raca/etnia') ---
+1.c_cor/raca/etnia
+Branca                  2273
+Parda                    842
+Preta                    217
+Amarela                  117
+Prefiro não informar      28
+Outra                     12
+Indígena                   4
+                           2
+
+--- pcd  (coluna [6]: '1.d_pcd') ---
+1.d_pcd
+Não                     3337
+Sim                      127
+Prefiro não informar      31
+
+--- regiao  (coluna [26]: '1.i.2_regiao_onde_mora') ---
+1.i.2_regiao_onde_mora
+Sudeste         2171
+Sul              540
+Nordeste         380
+Centro-oeste     231
+                 125
+Norte             48
+
+--- nivel_ensino  (coluna [31]: '1.l_nivel_de_ensino') ---
+1.l_nivel_de_ensino
+Pós-graduação                 1404
+Graduação/Bacharelado         1068
+Mestrado                       444
+Estudante de Graduação         355
+Doutorado ou Phd               152
+Não tenho graduação formal      61
+Prefiro não informar            11
+
+--- situacao_trabalho  (coluna [33]: '2.a_situação_de_trabalho') ---
+2.a_situação_de_trabalho
+Empregado (CLT)                                                    2279
+Empreendedor ou Empregado (CNPJ)                                    428
+Desempregado, buscando recolocação                                  167
+Vivo no Brasil e trabalho remoto para empresa de fora do Brasil     141
+Estagiário                                                          126
+Servidor Público                                                    123
+Vivo fora do Brasil e trabalho para empresa de fora do Brasil        66
+Trabalho na área Acadêmica/Pesquisador                               44
+Freelancer                                                           37
+Somente Estudante (graduação)                                        34
+Somente Estudante (pós-graduação)                                    22
+Prefiro não informar                                                 18
+Desempregado e não estou buscando recolocação                        10
+
+--- gestor  (coluna [36]: '2.d_atua_como_gestor') ---
+2.d_atua_como_gestor
+0    2501
+1     727
+      267
+
+--- nivel_senioridade  (coluna [39]: '2.g_nivel') ---
+2.g_nivel
+                       994
+Sênior                 858
+Pleno                  776
+Júnior                 518
+Especialista/Staff+    349
+
+--- faixa_salarial  (coluna [40]: '2.h_faixa_salarial') ---
+2.h_faixa_salarial
+de R$ 8.001/mês a R$ 12.000/mês     708
+de R$ 12.001/mês a R$ 16.000/mês    484
+de R$ 6.001/mês a R$ 8.000/mês      367
+de R$ 4.001/mês a R$ 6.000/mês      344
+de R$ 16.001/mês a R$ 20.000/mês    323
+                                    267
+de R$ 20.001/mês a R$ 25.000/mês    213
+de R$ 3.001/mês a R$ 4.000/mês      157
+de R$ 25.001/mês a R$ 30.000/mês    134
+de R$ 2.001/mês a R$ 3.000/mês      130
+de R$ 1.001/mês a R$ 2.000/mês      117
+Acima de R$ 40.001/mês              115
+de R$ 30.001/mês a R$ 40.000/mês    114
+Menos de R$ 1.000/mês                21
+de R$ 25.001/mês a R$ 3000/mês        1
+
+--- tempo_exp_dados  (coluna [41]: '2.i_tempo_de_experiencia_em_dados') ---
+2.i_tempo_de_experiencia_em_dados
+de 3 a 4 anos                             814
+de 5 a 6 anos                             650
+de 1 a 2 anos                             511
+Mais de 10 anos                           440
+de 7 a 10 anos                            417
+                                          267
+Menos de 1 ano                            218
+Não tenho experiência na área de dados    178
+
+--- modelo_trabalho_atual  (coluna [70]: '2.q_modelo_de_trabalho_atual') ---
+2.q_modelo_de_trabalho_atual
+Modelo 100% remoto                                                                                                1282
+Modelo 100% presencial                                                                                             670
+Modelo híbrido com dias fixos de trabalho presencial                                                               645
+Modelo híbrido flexível (o funcionário tem liberdade para escolher quando estar no escritório presencialmente)     631
+                                                                                                                   267
+
+--- empresa_prioriza_ia_generativa  (coluna [112]: '3.e_ai_generativa_e_llm_é_uma_prioridade?') ---
+3.e_ai_generativa_e_llm_é_uma_prioridade?
+                                                                                                                                                           2843
+Sim, está entre nossas principais prioridades para os próximos 2-4 anos (com discussões de iniciativas e orçamentos de curto a médio prazo).                240
+Mais ou menos... É uma das várias iniciativas que estamos impulsionando, mas não é uma prioridade (tratam-se de iniciativas isoladas e com pouco foco).     169
+Sim, é nossa principal prioridade como empresa (com foco executivo significativo e alocação de orçamento relevante).                                        155
+Não é uma iniciativa que estamos focando e não tem sido uma prioridade.                                                                                      74
+Não sei opinar sobre esse assunto.                                                                                                                           14
+
+--- uso_ia_generativa_individual  (coluna [227]: '4.j_usa_chatgpt_ou_copilot_no_trabalho?') ---
+4.j_usa_chatgpt_ou_copilot_no_trabalho?
+                                                                                                                                                                                                                                                                                                          1389
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, Anthropic Claude, Google Gemini etc) e a empresa em que trabalho paga pela solução.                                                                                                                                                468
+Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia.                                                                                                                                                                                          460
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, Anthropic Claude, Google Gemini etc) e pago do meu próprio bolso.                                                                                                                                                                  349
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, Anthropic Claude, Google Gemini etc) e a empresa em que trabalho paga pela solução., Utilizo soluções de AI para código (exemplo: Github Copilot, Cursor, Claude Code) para ter mais produtividade no dia a dia.                   224
+Utilizo soluções de AI para código (exemplo: Github Copilot, Cursor, Claude Code) para ter mais produtividade no dia a dia.                                                                                                                                                                                122
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, Anthropic Claude, Google Gemini etc) e pago do meu próprio bolso., Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, Anthropic Claude, Google Gemini etc) e a empresa em que trabalho paga pela solução.      77
+Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia., Utilizo soluções de AI para código (exemplo: Github Copilot, Cursor, Claude Code) para ter mais produtividade no dia a dia.                                                              75
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, Anthropic Claude, Google Gemini etc) e pago do meu próprio bolso., Utilizo soluções de AI para código (exemplo: Github Copilot, Cursor, Claude Code) para ter mais produtividade no dia a dia.                                      74
+Utilizo soluções de AI para código (exemplo: Github Copilot, Cursor, Claude Code) para ter mais produtividade no dia a dia., Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, Anthropic Claude, Google Gemini etc) e a empresa em que trabalho paga pela solução.                    60
+Utilizo soluções de AI para código (exemplo: Github Copilot, Cursor, Claude Code) para ter mais produtividade no dia a dia., Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia.                                                              41
+Não utilizo nenhum tipo de solução de IA Generativa para melhorar a produtividade no dia a dia.                                                                                                                                                                                                             39
+Utilizo soluções de AI para código (exemplo: Github Copilot, Cursor, Claude Code) para ter mais produtividade no dia a dia., Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, Anthropic Claude, Google Gemini etc) e pago do meu próprio bolso.                                      32
+Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia., Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, Anthropic Claude, Google Gemini etc) e a empresa em que trabalho paga pela solução.                              29
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, Anthropic Claude, Google Gemini etc) e a empresa em que trabalho paga pela solução., Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia.                              17
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, Anthropic Claude, Google Gemini etc) e a empresa em que trabalho paga pela solução., Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, Anthropic Claude, Google Gemini etc) e pago do meu próprio bolso.      17
+Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia., Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, Anthropic Claude, Google Gemini etc) e pago do meu próprio bolso.                                                11
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, Anthropic Claude, Google Gemini etc) e pago do meu próprio bolso., Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia.                                                 6
+Não utilizo nenhum tipo de solução de IA Generativa para melhorar a produtividade no dia a dia., Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia.                                                                                           3
+Utilizo apenas soluções gratuitas (como por exemplo o ChatGPT), para me ajudar a ser mais produtivo no dia a dia., Não utilizo nenhum tipo de solução de IA Generativa para melhorar a produtividade no dia a dia.                                                                                           1
+Utilizo soluções pagas de AI Generativa (como por exemplo ChatGPT plus, Anthropic Claude, Google Gemini etc) e pago do meu próprio bolso., Não utilizo nenhum tipo de solução de IA Generativa para melhorar a produtividade no dia a dia.                                                                   1

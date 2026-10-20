@@ -1,0 +1,159 @@
+Shape: (14005, 37)
+
+--- dtypes ---
+id_respondente                        str
+idade                             float64
+faixa_idade                           str
+genero                                str
+cor_raca_etnia                        str
+pcd                                   str
+vive_no_brasil                      Int64
+uf                                    str
+regiao                                str
+nivel_ensino                          str
+area_formacao                         str
+situacao_trabalho                     str
+setor                                 str
+numero_funcionarios                   str
+gestor                              Int64
+cargo_atual                           str
+nivel_senioridade                     str
+faixa_salarial                        str
+tempo_exp_dados                       str
+tempo_exp_ti                          str
+modelo_trabalho_atual                 str
+modelo_trabalho_ideal                 str
+area_atuacao                          str
+linguagem_preferida                   str
+cloud_preferida                       str
+ferramenta_bi_preferida               str
+empresa_prioriza_ia_generativa        str
+uso_ia_generativa_individual          str
+edicao_pesquisa                       str
+ano_pesquisa                        int64
+satisfeito_empresa_atual            Int64
+faixa_salarial_valor_medio        float64
+prioridade_ia_empresa                 str
+usa_ia_generativa                 float64
+paga_por_ia_generativa              int64
+usa_ia_para_codigo                  int64
+id_unico                              str
+
+--- % nulos por coluna ---
+prioridade_ia_empresa             81.5
+ferramenta_bi_preferida           36.4
+linguagem_preferida               33.8
+cloud_preferida                   32.5
+usa_ia_generativa                 32.2
+nivel_senioridade                 27.3
+cargo_atual                       27.3
+modelo_trabalho_ideal              8.3
+tempo_exp_ti                       8.3
+numero_funcionarios                8.3
+satisfeito_empresa_atual           8.3
+faixa_salarial_valor_medio         8.3
+setor                              8.3
+modelo_trabalho_atual              8.3
+gestor                             8.3
+tempo_exp_dados                    8.3
+faixa_salarial                     8.3
+uf                                 2.8
+regiao                             2.8
+area_formacao                      2.0
+id_respondente                     0.0
+cor_raca_etnia                     0.0
+genero                             0.0
+faixa_idade                        0.0
+idade                              0.0
+pcd                                0.0
+vive_no_brasil                     0.0
+nivel_ensino                       0.0
+situacao_trabalho                  0.0
+edicao_pesquisa                    0.0
+uso_ia_generativa_individual       0.0
+empresa_prioriza_ia_generativa     0.0
+area_atuacao                       0.0
+ano_pesquisa                       0.0
+paga_por_ia_generativa             0.0
+usa_ia_para_codigo                 0.0
+id_unico                           0.0
+
+--- amostra (5 linhas aleatorias, colunas chave) ---
+                                         id_unico  ano_pesquisa     genero        regiao                                       cargo_atual nivel_senioridade                    faixa_salarial  faixa_salarial_valor_medio                                                                                           modelo_trabalho_atual prioridade_ia_empresa  usa_ia_generativa  paga_por_ia_generativa  usa_ia_para_codigo
+3647   2023-2024_p40nhga6y98veqzp2hdump40nhgqowxf          2023  Masculino       Sudeste                    Analista de Dados/Data Analyst            Sênior  de R$ 12.001/mês a R$ 16.000/mês                     14000.5  Modelo híbrido flexível (o funcionário tem liberdade para escolher quando estar no escritório presencialmente)                   NaN                1.0                       0                   0
+12396  2025-2026_qrqazws5s7mv1tn1xsqrqazwx8usut4e          2025   Feminino       Sudeste                         Analista de BI/BI Analyst            Sênior  de R$ 12.001/mês a R$ 16.000/mês                     14000.5                                                                                              Modelo 100% remoto                   NaN                1.0                       1                   0
+1580   2023-2024_auxzgwqp25a1sjm28hauxzssjt4yu74a          2023  Masculino  Centro-oeste                                       Outra Opção             Pleno   de R$ 8.001/mês a R$ 12.000/mês                     10000.5                                                                                          Modelo 100% presencial                   NaN                1.0                       0                   0
+7877   2024-2025_26h3gnk2ybnxzwhabctn1si26h3gn5z4          2024  Masculino       Sudeste  Engenheiro de Dados/Data Engineer/Data Architect             Pleno   de R$ 8.001/mês a R$ 12.000/mês                     10000.5                                                            Modelo híbrido com dias fixos de trabalho presencial                   NaN                1.0                       0                   1
+4874   2023-2024_x9k7p4cfrcbv7mudpx9k7ptjkjuqa8xy          2023   Feminino           Sul                    Analista de Dados/Data Analyst            Júnior    de R$ 4.001/mês a R$ 6.000/mês                      5000.5  Modelo híbrido flexível (o funcionário tem liberdade para escolher quando estar no escritório presencialmente)                   NaN                0.0                       0                   0
+
+--- nivel_senioridade por ano_pesquisa (conta 'Especialista/Staff+' por ano) ---
+nivel_senioridade  Especialista/Staff+  Júnior  Pleno  Sênior
+ano_pesquisa                                                 
+2023                                 0    1046   1392    1419
+2024                                 0     868   1377    1573
+2025                               349     518    776     858
+
+--- salario medio por nivel_senioridade e ano ---
+ano_pesquisa            2023     2024     2025
+nivel_senioridade                             
+Especialista/Staff+      NaN      NaN  20029.0
+Júnior                3909.0   4158.0   4153.0
+Pleno                 7540.0   8048.0   8301.0
+Sênior               13669.0  14604.0  14470.0
+
+--- genero por nivel_senioridade (% dentro de cada nivel) ---
+genero               Feminino  Masculino  Outro  Prefiro não informar
+nivel_senioridade                                                    
+Especialista/Staff+      20.1       79.1    0.3                   0.6
+Júnior                   28.2       71.3    0.1                   0.4
+Pleno                    24.7       74.8    0.2                   0.3
+Sênior                   21.3       78.2    0.2                   0.3
+
+--- usa_ia_generativa (%) por ano_pesquisa ---
+ano_pesquisa
+2023    80.3
+2024    93.5
+2025    97.9
+
+
+
+Tecnologias long shape: (77051, 6)
+--- top 10 linguagens por ano (contagem) ---
+
+2023:
+                   tecnologia    n
+                          SQL 3156
+                       Python 2825
+                            R  408
+                         Java  355
+Não utilizo nenhuma linguagem  305
+             Visual Basic/VBA  285
+                   JavaScript  282
+                    SAS/Stata  151
+                        Scala  131
+                     C/C++/C#   70
+
+2024:
+      tecnologia    n
+             SQL 3146
+          Python 2935
+               R  352
+            Java  291
+      JavaScript  223
+Visual Basic/VBA  215
+       SAS/Stata  130
+           Scala  126
+        C/C++/C#   46
+             PHP   34
+
+2025:
+      tecnologia    n
+          Python 1929
+             SQL 1764
+               R  328
+           Scala   70
+        C/C++/C#   49
+            Rust   35
+           Julia   18
+             DAX    8
+Visual Basic/VBA    1

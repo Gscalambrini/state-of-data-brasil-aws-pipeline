@@ -2,7 +2,7 @@
 negocio, prontas para consulta direta via Athena (sem necessidade de GROUP BY
 complexo no momento da consulta).
 
-Prototipo LOCAL em pandas — mesma logica sera portada para PySpark no notebook
+Prototipo LOCAL em pandas; mesma logica sera portada para PySpark no notebook
 do Glue (notebooks/03_gold/gold_glue_notebook.ipynb).
 
 Uso: python gold_builder.py  (depende de data/silver/*.parquet já existir)
@@ -24,7 +24,7 @@ def main() -> None:
     tec = pd.read_parquet(SILVER / "tb_silver_tecnologias_adocao.parquet")
 
     # ------------------------------------------------------------------
-    # gold_perfil_mercado — Q1: como esta estruturado o mercado
+    # gold_perfil_mercado: Q1 (como esta estruturado o mercado)
     # grao: ano_pesquisa x regiao x cargo_atual x nivel_senioridade
     # ------------------------------------------------------------------
     perfil = (
@@ -37,7 +37,7 @@ def main() -> None:
     print(f"gold_perfil_mercado: {len(perfil):,} linhas")
 
     # ------------------------------------------------------------------
-    # gold_remuneracao — Q2, Q3 (gap de genero), Q6 (regiao/senioridade/modelo)
+    # gold_remuneracao: Q2, Q3 (gap de genero), Q6 (regiao/senioridade/modelo)
     # grao: ano_pesquisa x cargo_atual x nivel_senioridade x regiao x genero x modelo_trabalho_atual
     # ------------------------------------------------------------------
     base_sal = df.dropna(subset=["faixa_salarial_valor_medio"])
@@ -53,7 +53,7 @@ def main() -> None:
     print(f"gold_remuneracao: {len(remuneracao):,} linhas")
 
     # ------------------------------------------------------------------
-    # gold_diversidade_genero — Q3
+    # gold_diversidade_genero: Q3
     # grao: ano_pesquisa x nivel_senioridade x genero
     # ------------------------------------------------------------------
     genero_tab = (
@@ -68,7 +68,7 @@ def main() -> None:
     print(f"gold_diversidade_genero: {len(genero_tab):,} linhas")
 
     # ------------------------------------------------------------------
-    # gold_tecnologias_adocao — Q4
+    # gold_tecnologias_adocao: Q4
     # grao: ano_pesquisa x categoria_tecnologia x tecnologia
     # ------------------------------------------------------------------
     total_respondentes_ano = df.groupby("ano_pesquisa").size().rename("total_respondentes")
@@ -85,7 +85,7 @@ def main() -> None:
     print(f"gold_tecnologias_adocao: {len(tech_counts):,} linhas")
 
     # ------------------------------------------------------------------
-    # gold_adocao_ia — Q5
+    # gold_adocao_ia: Q5
     # ------------------------------------------------------------------
     adocao_ia = (
         df.groupby("ano_pesquisa")
@@ -112,7 +112,7 @@ def main() -> None:
     print(f"gold_prioridade_ia_empresa: {len(prioridade_ia):,} linhas")
 
     # ------------------------------------------------------------------
-    # gold_modelo_trabalho — Q6
+    # gold_modelo_trabalho: Q6
     # grao: ano_pesquisa x regiao x modelo_trabalho_atual
     # ------------------------------------------------------------------
     modelo_trabalho = (

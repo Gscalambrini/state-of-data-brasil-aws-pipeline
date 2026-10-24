@@ -1,5 +1,5 @@
 """Extrai texto plano de word/document.xml de um .docx ja extraido, sem
-depender de bibliotecas externas (so stdlib) — util quando pandoc/python-docx
+depender de bibliotecas externas (so stdlib). Util quando pandoc/python-docx
 nao estao disponiveis no ambiente.
 
 Uso: python -I extrair_texto_docx.py <pasta_extraida>/word/document.xml

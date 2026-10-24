@@ -2,7 +2,7 @@
 
 Prototipo LOCAL em pandas. A mesma logica (mesmos indices de coluna, mesmas
 regras de recodificacao) e portada para PySpark no notebook do Glue em
-notebooks/02_silver/silver_glue_notebook.ipynb — aqui serve para validar a
+notebooks/02_silver/silver_glue_notebook.ipynb. Aqui serve para validar a
 harmonizacao e já deixar uma base real disponivel para a EDA local.
 
 Cada edicao da pesquisa tem um schema de colunas diferente (ver docs/_headers_*.txt

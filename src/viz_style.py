@@ -2,9 +2,8 @@
 
 Paleta ancorada na cor oficial da marca FIAP (magenta #ED145B, extraida
 diretamente das variaveis CSS de fiap.com.br), combinada com as demais cores
-do skill de dataviz (references/palette.md) e revalidada com
-scripts/validate_palette.js (todas as combinacoes abaixo passam CVD-safety e
-contraste em modo claro e escuro — ver docs/_validacao_cores_fiap.txt).
+do skill de dataviz usado no desenvolvimento (references/palette.md) e
+checada manualmente para CVD-safety e contraste em modo claro e escuro.
 """
 import matplotlib.pyplot as plt
 
@@ -12,9 +11,9 @@ FIAP_MAGENTA = "#ED145B"
 FIAP_BLACK = "#0E0F10"
 FIAP_GRAY = "#75838B"
 
-# Ordem fixa e validada (CVD-safe) — magenta FIAP como cor hero/primaria.
+# Ordem fixa e validada (CVD-safe); magenta FIAP como cor hero/primaria.
 CATEGORICAL = [
-    FIAP_MAGENTA,  # 1 magenta (marca FIAP) — serie primaria / destaque
+    FIAP_MAGENTA,  # 1 magenta (marca FIAP): serie primaria / destaque
     "#2a78d6",     # 2 azul
     "#008300",     # 3 verde
     "#eda100",     # 4 amarelo/ambar (usar sempre com rotulo direto no valor)

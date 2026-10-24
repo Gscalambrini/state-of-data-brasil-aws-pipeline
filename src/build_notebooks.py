@@ -53,10 +53,10 @@ GLUE_SESSION_MAGICS = """\
 """
 
 # Garante explicitamente que o Glue Data Catalog seja usado como metastore do
-# Hive para esta sessao Spark — sem isso, saveAsTable() pode criar as tabelas
-# num metastore local/efemero que o Athena nao enxerga. Em notebooks criados
-# direto no AWS Glue Studio isso costuma vir habilitado por padrao, mas
-# declarar explicitamente remove qualquer ambiguidade (confirmado via
+# Hive para esta sessao Spark. Sem isso, saveAsTable() pode criar as tabelas
+# num metastore local/efemero que o Athena nao enxerga. Notebooks criados
+# direto no AWS Glue Studio costumam vir com isso habilitado por padrao, mas
+# declarar explicitamente remove qualquer ambiguidade (confirmado na
 # documentacao oficial do AWS Glue sobre --enable-glue-datacatalog).
 GLUE_CATALOG_CONFIG = """\
 %%configure
@@ -81,21 +81,22 @@ job = Job(glueContext)
 
 CONFIG_CELL = """\
 # =============================================================================
-# CONFIGURACAO — valores conferidos AO VIVO no console AWS do time em
+# CONFIGURACAO: valores conferidos ao vivo no console AWS do time em
 # 2026-10-18 (Glue Data Catalog + S3). Troque so se os nomes mudarem.
 #
 # Os 3 CSVs brutos ficam juntos, soltos (sem subpasta por edicao), direto em
-# s3://tech-challenge-gt26/bronze/ — e com nomes de arquivo que NAO indicam a
-# edicao de forma confiavel. Mapeamento confirmado por inspecao de conteudo
-# (S3 Select: formato do cabecalho + pergunta "passou por layoff em <ano>"):
+# s3://tech-challenge-gt26/bronze/, com nomes de arquivo que nao indicam a
+# edicao de forma confiavel. O mapeamento abaixo foi confirmado por inspecao
+# de conteudo (S3 Select: formato do cabecalho + pergunta "passou por layoff
+# em <ano>"):
 #   - "State_of_data_2022.csv"                      -> edicao 2023-2024
 #   - "State_of_data_BR_2023_Kaggle - df_survey_2023.csv" -> edicao 2024-2025
 #   - "Final Dataset - State of Data 2025-2026 - Kaggle.csv" -> edicao 2025-2026
 #
-# Os nomes de tabela abaixo (tb_bronze_*, tb_silver_*, tb_gold_*) usam um
-# prefixo "tb_" de proposito para conviver, dentro do MESMO database
-# db_techchallenge_gt_fiap, com as tabelas "bronze"/"silver"/"gold" que ja
-# existem — nada aqui sobrescreve ou apaga o que ja foi feito.
+# Os nomes de tabela abaixo (tb_bronze_*, tb_silver_*, tb_gold_*) usam o
+# prefixo "tb_" de proposito, para conviver no mesmo database
+# db_techchallenge_gt_fiap com as tabelas "bronze"/"silver"/"gold" que ja
+# existem. Nada aqui sobrescreve ou apaga o que ja foi feito.
 # =============================================================================
 BUCKET = "s3://tech-challenge-gt26"
 
@@ -105,8 +106,8 @@ RAW_PATHS = {
     "2025-2026": f"{BUCKET}/bronze/Final Dataset - State of Data 2025-2026 - Kaggle.csv",
 }
 
-# Prefixo NOVO e distinto do "bronze/" (lowercase) onde os CSVs brutos ja
-# estao — evita qualquer risco de sobrescrever a fonte original.
+# Prefixo novo e distinto do "bronze/" (lowercase) onde os CSVs brutos ja
+# estao, para evitar qualquer risco de sobrescrever a fonte original.
 BRONZE_PATH = f"{BUCKET}/bronze_parquet/"
 SILVER_PATH = f"{BUCKET}/Silver/"
 GOLD_PATH = f"{BUCKET}/Gold/"
@@ -123,25 +124,25 @@ for db in (DB_BRONZE, DB_SILVER, DB_GOLD):
 def build_bronze_notebook() -> dict:
     cells = [
         md("""\
-# Bronze — ingestão e catalogação das 3 edições do State of Data Brasil
+# Bronze: ingestão e catalogação das 3 edições do State of Data Brasil
 
 **Objetivo da camada Bronze**: carregar os CSVs brutos (um por edição da pesquisa,
 baixados manualmente do Kaggle por exigirem login) o mais próximo possível de
-como vieram da fonte — convertendo para Parquet (mais eficiente que CSV pro
-resto do pipeline) e corrigindo o TIPO dos valores ausentes (ver célula de
-normalização abaixo) — e catalogar cada edição como uma tabela no AWS Glue
+como vieram da fonte, convertendo para Parquet (mais eficiente que CSV para o
+resto do pipeline) e corrigindo o tipo dos valores ausentes (ver célula de
+normalização abaixo), e catalogar cada edição como uma tabela no AWS Glue
 Data Catalog, para ficar consultável via Athena.
 
 **Por que 3 tabelas separadas (`tb_bronze_2023_2024`, `tb_bronze_2024_2025`,
 `tb_bronze_2025_2026`), e não uma tabela `bronze` única?** Cada edição tem um
 schema de colunas **diferente** (quantidade e nomes de colunas mudam a cada ano
-da pesquisa). Um Crawler apontando pra um prefixo com os 3 CSVs juntos cria uma
+da pesquisa). Um Crawler apontando para um prefixo com os 3 CSVs juntos cria uma
 tabela "Frankenstein": a união de todas as colunas das 3 edições, com `NULL` em
-toda coluna que simplesmente não existe naquela edição — ou seja, boa parte do
-volume de nulo que aparece numa tabela `bronze` única não é dado faltando, é
+toda coluna que simplesmente não existe naquela edição. Ou seja, boa parte do
+volume de nulo que aparece numa tabela `bronze` única não é dado faltando: é
 efeito colateral de forçar 3 questionários diferentes dentro da mesma tabela.
 Por isso aqui cada edição vira sua própria tabela, com seu schema nativo, sem
-nulo artificial — a unificação de verdade (mesma pergunta = mesma coluna, nas
+nulo artificial. A unificação de verdade (mesma pergunta = mesma coluna nas
 3 edições) é trabalho da Silver, não da Bronze.
 
 Pré-requisito: os 3 arquivos CSV devem já estar enviados para os prefixos
@@ -153,7 +154,7 @@ Pré-requisito: os 3 arquivos CSV devem já estar enviados para os prefixos
         md("## Leitura e normalização do tipo dos valores ausentes, por edição"),
         code("""\
 # O encoding de origem é UTF-8 com alguns raros bytes corrompidos em campos de
-# texto livre (identificado na validação local) — "PERMISSIVE" + multiLine
+# texto livre (identificado na validação local). "PERMISSIVE" + multiLine
 # evitam que uma linha malformada derrube a leitura inteira do arquivo.
 EDICOES = ["2023-2024", "2024-2025", "2025-2026"]
 
@@ -175,15 +176,15 @@ for edicao in EDICOES:
 ## Renomeação para nomes de coluna compatíveis com o Hive Metastore
 
 O cabeçalho original da edição 2023-2024 vem serializado como tupla Python em
-texto (ex: `"('P1_b ', 'Genero')"`) — com vírgula, aspas e parênteses dentro do
+texto (ex: `"('P1_b ', 'Genero')"`), com vírgula, aspas e parênteses dentro do
 nome. O Glue Data Catalog usa o Hive Metastore por trás, que **não aceita
-vírgula (nem vários outros caracteres) em nome de coluna** — tentar catalogar
+vírgula (nem vários outros caracteres) em nome de coluna**: tentar catalogar
 assim gera `AnalysisException: ... column whose name contains commas`.
 Isso explica, inclusive, por que o Crawler do time também não preservou os
 nomes originais: nenhuma ferramenta compatível com Hive consegue.
 
 A célula abaixo sanitiza os nomes **por posição**, sem depender do significado
-de cada coluna — a Silver já seleciona campos pelo índice posicional
+de cada coluna. A Silver já seleciona campos pelo índice posicional
 (`col_by_idx`), então o nome exato aqui não importa para o resto do pipeline,
 só precisa ser válido no Hive e consistente dentro de cada edição."""),
         code("""\
@@ -209,13 +210,13 @@ print("colunas renomeadas pra nomes compativeis com o Hive Metastore (mantendo a
 """),
         md("""\
 O CSV original representa "não respondi"/"não se aplica" como **string vazia**
-(`""`), não como nulo de verdade — como texto, uma célula vazia parece igual a
-um nulo, mas pra um motor de consulta (Spark, Athena) os dois são tratados de
+(`""`), não como nulo de verdade. Como texto, uma célula vazia parece igual a
+um nulo, mas para um motor de consulta (Spark, Athena) os dois são tratados de
 forma diferente (`COUNT`, `IS NULL`, `GROUP BY` etc. tratam `""` como um valor
 válido, não como ausência de valor, o que distorce qualquer contagem). A célula
 abaixo corrige isso de forma genérica, sem precisar saber o que cada coluna
 significa: tira espaço em branco (`"   "` também vira nulo) e string vazia
-passa a ser `NULL` de verdade — aplicado a **todas** as colunas, já que a
+passa a ser `NULL` de verdade, aplicado a **todas** as colunas, já que a
 Bronze ainda não sabe o significado de cada uma (isso só é decidido na Silver).
 Nada além de tipo muda aqui: nenhuma linha é removida, nenhum valor
 não-vazio é alterado."""),
@@ -225,12 +226,12 @@ def normalizar_nulos(df):
     # em texto (ex: "('P3_c_1 ', 'Pensar na visao de longo prazo...')"), com
     # ponto/virgula/aspas dentro do nome. Tanto F.col(nome) quanto df[nome]
     # tentam interpretar nomes assim como referencia qualificada/aninhada e
-    # quebram com AnalysisException — a unica forma segura e envolver o nome
+    # quebram com AnalysisException. A unica forma segura e envolver o nome
     # inteiro em crase (`...`), que forca o Spark a trata-lo como um unico
     # identificador literal, sem nenhum parsing de ponto/virgula/aspas.
     #
     # Em vez de 399 .withColumn() encadeados (um plano Spark profundamente
-    # aninhado, lento de analisar — e a causa da sessao travando antes), um
+    # aninhado e lento de analisar, foi a causa da sessao travando antes), um
     # unico .select() com todas as colunas recalculadas de uma vez: mais
     # rapido e evita reavaliar a cadeia inteira a cada coluna.
     colunas = [
@@ -245,7 +246,7 @@ bronze_dfs = {edicao: normalizar_nulos(df) for edicao, df in bronze_dfs.items()}
 ## Diagnóstico: quanto cada edição tem de valor ausente
 
 Mostra, por edição, o percentual médio de células nulas e as 5 colunas com mais
-nulo — serve pra confirmar que o volume alto de nulo é **esperado** (a pesquisa
+nulo, para confirmar que o volume alto de nulo é **esperado** (a pesquisa
 usa lógica de "pule para": quem não usa cloud, por exemplo, não responde as
 perguntas sobre qual cloud usa) e não um efeito colateral de bug de leitura."""),
         code("""\
@@ -293,23 +294,23 @@ spark.sql(f"SHOW TABLES IN {DB_BRONZE}").show(truncate=False)
 def build_silver_notebook() -> dict:
     cells = [
         md("""\
-# Silver — harmonização das 3 edições num schema único
+# Silver: harmonização das 3 edições num schema único
 
 **O desafio desta camada**: cada edição da pesquisa usa um schema de colunas
-diferente — por exemplo, a edição 2023-2024 tem cabeçalhos no formato
+diferente. Por exemplo, a edição 2023-2024 tem cabeçalhos no formato
 `('P1_b ', 'Genero')` (tupla Python serializada como texto), enquanto as
 edições 2024-2025 e 2025-2026 usam `1.b_genero`. Além disso, campos booleanos
 são representados como `'0'/'1'` em duas edições e como `'TRUE'/'FALSE'` em
-outra. Esta validado localmente em `src/silver_harmonization.py` (pandas) —
+outra. Isso foi validado localmente em `src/silver_harmonization.py` (pandas);
 este notebook replica exatamente a mesma lógica em PySpark.
 
-Resultado: duas tabelas Silver —
+Resultado: duas tabelas Silver.
 - `tb_silver_respondentes`: uma linha por respondente, ~28 campos
   padronizados, união das 3 edições (schema largo).
 - `tb_silver_tecnologias_adocao`: uma linha por `(respondente, tecnologia)`
-  (schema longo/despivotado) — em vez de manter dezenas de colunas 0/1 por
+  (schema longo/despivotado). Em vez de manter dezenas de colunas 0/1 por
   linguagem/banco/cloud/ferramenta de BI, cada tecnologia marcada como "usa"
-  vira uma linha. Isso simplifica MUITO os `GROUP BY` da camada Gold e do
+  vira uma linha. Isso simplifica muito os `GROUP BY` da camada Gold e do
   Athena (ex: "ranking de linguagens mais usadas" é um `GROUP BY tecnologia`
   direto, em vez de somar 15 colunas manualmente)."""),
         code(GLUE_SESSION_MAGICS),
@@ -323,16 +324,16 @@ Os índices abaixo foram determinados inspecionando o header de cada CSV (ver
 `docs/_headers_*.txt` e `docs/_diagnostico_categorias.txt` no protótipo local)
 e validados comparando distribuições de categorias entre as 3 edições."""),
         code("""\
-# ATENCAO — indices abaixo re-mapeados em 2026-10-19 depois de inspecionar os
-# CABECALHOS REAIS dos 3 CSVs no S3 (via S3 Select), nao mais os CSVs de
+# ATENCAO: indices abaixo re-mapeados em 2026-10-19 depois de inspecionar os
+# cabecalhos reais dos 3 CSVs no S3 (via S3 Select), nao mais os CSVs de
 # referencia locais. Achado ao vivo: o arquivo de "2023-2024" do time
-# (State_of_data_2022.csv, 353 colunas) e uma revisao MAIS ANTIGA do Kaggle
-# que nao tem as perguntas de IA Generativa nem "ferramenta de BI preferida"
-# — por isso esses 3 campos ficam de fora do dict dessa edicao (viram NULL
+# (State_of_data_2022.csv, 353 colunas) e uma revisao mais antiga do Kaggle
+# que nao tem as perguntas de IA Generativa nem "ferramenta de BI preferida".
+# Por isso esses 3 campos ficam de fora do dict dessa edicao (viram NULL
 # automaticamente no unionByName(allowMissingColumns=True) mais abaixo, o que
 # e o resultado correto: a pergunta nunca existiu pra essa edicao). Ja o
-# arquivo real de "2024-2025" (df_survey_2023.csv, 399 colunas) tem a MESMA
-# estrutura que o CSV de referencia local de 2023-2024 usado antes — por isso
+# arquivo real de "2024-2025" (df_survey_2023.csv, 399 colunas) tem a mesma
+# estrutura que o CSV de referencia local de 2023-2024 usado antes. Por isso
 # os indices que antes estavam em "2023-2024" foram movidos pra "2024-2025".
 # "2025-2026" nao mudou (confirmado igual ao arquivo real, 388 colunas).
 SCALAR_FIELDS = {
@@ -346,7 +347,7 @@ SCALAR_FIELDS = {
         "satisfeito": 26, "modelo_trabalho_atual": 48, "modelo_trabalho_ideal": 49,
         "area_atuacao": 91, "linguagem_preferida": 126, "cloud_preferida": 162,
         # sem ferramenta_bi_preferida / empresa_prioriza_ia_generativa /
-        # uso_ia_generativa_individual — essas perguntas nao existem no CSV
+        # uso_ia_generativa_individual: essas perguntas nao existem no CSV
         # real desta edicao (confirmado via S3 Select).
     },
     "2024-2025": {
@@ -395,8 +396,8 @@ import re
 def col_by_idx(df, idx):
     # F.col(nome) sozinho (e tambem df[nome]) quebra com AnalysisException em
     # varios cabecalhos da edicao 2023-2024, serializados como tupla Python em
-    # texto (ex: "('P1_b ', 'Genero')") — o parser de nomes qualificados do
-    # Spark tenta interpretar o ponto/virgula/aspas dentro do nome. Envolver
+    # texto (ex: "('P1_b ', 'Genero')"), porque o parser de nomes qualificados
+    # do Spark tenta interpretar o ponto/virgula/aspas dentro do nome. Envolver
     # em crase (`...`) forca o nome inteiro a ser tratado como um unico
     # identificador literal.
     return F.col(f"`{df.columns[idx]}`")
@@ -501,7 +502,7 @@ for edicao, col_map in SCALAR_FIELDS.items():
     out = out.withColumn("faixa_salarial_valor_medio", faixa_salarial_valor_medio(F.col("faixa_salarial")))
 
     # A edicao 2023-2024 (arquivo real) nao tem as perguntas de IA Generativa
-    # (ver nota no mapeamento de colunas acima) — nesse caso os campos
+    # (ver nota no mapeamento de colunas acima). Nesse caso os campos
     # derivados ficam NULL explicitamente, em vez de falhar tentando ler uma
     # coluna que nao existe no select() desta edicao.
     if "empresa_prioriza_ia_generativa" in col_map:
@@ -543,7 +544,7 @@ print(f"gravado e catalogado: {DB_SILVER}.tb_silver_respondentes")
 ## Construção de `tb_silver_tecnologias_adocao` (schema longo)
 
 Para cada edição e cada categoria de tecnologia (linguagem, banco de dados,
-cloud, ferramenta de BI), cada coluna checkbox (0/1) vira uma linha —
+cloud, ferramenta de BI), cada coluna checkbox (0/1) vira uma linha,
 mantendo apenas as linhas onde a tecnologia foi marcada como usada
 (`usa = 1`), para não inflar a tabela com zeros."""),
         code("""\
@@ -592,12 +593,12 @@ print(f"gravado e catalogado: {DB_SILVER}.tb_silver_tecnologias_adocao")
 def build_gold_notebook() -> dict:
     cells = [
         md("""\
-# Gold — tabelas especializadas por pergunta de negócio
+# Gold: tabelas especializadas por pergunta de negócio
 
 Lê a Silver consolidada e gera 7 tabelas Gold, cada uma já agregada e pronta
-para consulta direta via Athena (sem precisar repetir `GROUP BY` complexos a
-cada consulta) — ver `notebooks/05_analytics_athena/*.sql` para as queries
-finais sobre estas tabelas. Lógica idêntica à validada em
+para consulta direta via Athena, sem precisar repetir `GROUP BY` complexos a
+cada consulta (ver `notebooks/05_analytics_athena/*.sql` para as queries
+finais sobre estas tabelas). Lógica idêntica à validada em
 `src/gold_builder.py` (pandas)."""),
         code(GLUE_SESSION_MAGICS),
         code(GLUE_CATALOG_CONFIG),
@@ -615,7 +616,7 @@ def gravar_gold(df, nome_tabela):
     )
     print(f"gravado e catalogado: {DB_GOLD}.{nome_tabela}  ({df.count():,} linhas)")
 """),
-        md("## gold_perfil_mercado — Q1: estrutura do mercado"),
+        md("## gold_perfil_mercado: Q1 (estrutura do mercado)"),
         code("""\
 gold_perfil_mercado = (
     respondentes.filter(F.col("cargo_atual").isNotNull())
@@ -624,7 +625,7 @@ gold_perfil_mercado = (
 )
 gravar_gold(gold_perfil_mercado, "gold_perfil_mercado")
 """),
-        md("## gold_remuneracao — Q2 (perfis valorizados), Q3 (gap de gênero), Q6 (região/modelo)"),
+        md("## gold_remuneracao: Q2 (perfis valorizados), Q3 (gap de gênero), Q6 (região/modelo)"),
         code("""\
 gold_remuneracao = (
     respondentes.filter(F.col("faixa_salarial_valor_medio").isNotNull())
@@ -637,7 +638,7 @@ gold_remuneracao = (
 )
 gravar_gold(gold_remuneracao, "gold_remuneracao")
 """),
-        md("## gold_diversidade_genero — Q3"),
+        md("## gold_diversidade_genero: Q3"),
         code("""\
 total_por_nivel = (
     respondentes.filter(F.col("nivel_senioridade").isNotNull())
@@ -656,7 +657,7 @@ gold_diversidade_genero = (
 )
 gravar_gold(gold_diversidade_genero, "gold_diversidade_genero")
 """),
-        md("## gold_tecnologias_adocao — Q4"),
+        md("## gold_tecnologias_adocao: Q4"),
         code("""\
 total_por_ano = respondentes.groupBy("ano_pesquisa").agg(F.count("*").alias("total_respondentes"))
 tech_counts = (
@@ -670,7 +671,7 @@ gold_tecnologias_adocao = (
 )
 gravar_gold(gold_tecnologias_adocao, "gold_tecnologias_adocao")
 """),
-        md("## gold_adocao_ia e gold_prioridade_ia_empresa — Q5"),
+        md("## gold_adocao_ia e gold_prioridade_ia_empresa: Q5"),
         code("""\
 gold_adocao_ia = respondentes.groupBy("ano_pesquisa").agg(
     F.round(F.mean("usa_ia_generativa") * 100, 1).alias("pct_usa_ia_generativa"),
@@ -690,7 +691,7 @@ gold_prioridade_ia_empresa = (
 )
 gravar_gold(gold_prioridade_ia_empresa, "gold_prioridade_ia_empresa")
 """),
-        md("## gold_modelo_trabalho — Q6"),
+        md("## gold_modelo_trabalho: Q6"),
         code("""\
 gold_modelo_trabalho = (
     respondentes.filter(F.col("modelo_trabalho_atual").isNotNull())
@@ -710,12 +711,12 @@ spark.sql(f"SHOW TABLES IN {DB_GOLD}").show(truncate=False)
 def build_eda_notebook() -> dict:
     cells = [
         md("""\
-# EDA — gráficos direto no Glue Studio Notebook, a partir da Gold
+# EDA: gráficos direto no Glue Studio Notebook, a partir da Gold
 
 Este notebook roda a análise exploratória **dentro da AWS** (Glue Notebook,
 Spark), lendo as 7 tabelas Gold e desenhando os mesmos gráficos que o
-protótipo local (`src/eda_charts.py`) gerou a partir dos mesmos dados —
-assim dá pra conferir, ao vivo, que os números batem.
+protótipo local (`src/eda_charts.py`) gerou a partir dos mesmos dados.
+Assim dá pra conferir, ao vivo, que os números batem.
 
 Cada célula usa a magic `%matplot plt` do Glue para mostrar o gráfico direto
 na saída da célula (Spark → `.toPandas()` nos resultados já agregados da
@@ -736,7 +737,7 @@ SENIORIDADE_ORDEM = ["Júnior", "Pleno", "Sênior", "Especialista/Staff+"]
 
 plt.rcParams.update({"figure.facecolor": "#fcfcfb", "axes.facecolor": "#fcfcfb"})
 """),
-        md("## Q1 — Estrutura do mercado: top 10 cargos"),
+        md("## Q1: Estrutura do mercado (top 10 cargos)"),
         code("""\
 perfil = spark.table(f"{DB_GOLD}.gold_perfil_mercado").toPandas()
 top_cargos = perfil.groupby("cargo_atual")["n_respondentes"].sum().sort_values().tail(10)
@@ -748,7 +749,7 @@ plt.xlabel("Nº de respondentes (2023-2026)")
 plt.tight_layout()
 %matplot plt
 """),
-        md("## Q2 — Perfis mais valorizados: salário médio por cargo"),
+        md("## Q2: Perfis mais valorizados (salário médio por cargo)"),
         code("""\
 remuneracao = spark.table(f"{DB_GOLD}.gold_remuneracao").toPandas()
 remuneracao["peso"] = remuneracao["salario_medio"] * remuneracao["n_respondentes"]
@@ -763,7 +764,7 @@ plt.xlabel("Salário médio estimado (R$/mês)")
 plt.tight_layout()
 %matplot plt
 """),
-        md("## Q3 — Diversidade de gênero: participação por senioridade e gap salarial"),
+        md("## Q3: Diversidade de gênero (participação por senioridade e gap salarial)"),
         code("""\
 import numpy as np
 
@@ -800,7 +801,7 @@ plt.legend()
 plt.tight_layout()
 %matplot plt
 """),
-        md("## Q4 — Tecnologias mais adotadas (edição mais recente)"),
+        md("## Q4: Tecnologias mais adotadas (edição mais recente)"),
         code("""\
 tecnologias = spark.table(f"{DB_GOLD}.gold_tecnologias_adocao").toPandas()
 ultimo_ano_tec = tecnologias["ano_pesquisa"].max()
@@ -822,7 +823,7 @@ fig.suptitle(f"Tecnologias mais adotadas ({ultimo_ano_tec})", fontsize=14, fontw
 plt.tight_layout()
 %matplot plt
 """),
-        md("## Q5 — Adoção de IA Generativa e prioridade executiva"),
+        md("## Q5: Adoção de IA Generativa e prioridade executiva"),
         code("""\
 adocao_ia = spark.table(f"{DB_GOLD}.gold_adocao_ia").toPandas().sort_values("ano_pesquisa")
 
@@ -850,7 +851,7 @@ plt.title(f"Prioridade de IA Generativa nas empresas ({ultimo_ano_ia})")
 plt.tight_layout()
 %matplot plt
 """),
-        md("## Q6 — Diferenças por região e modelo de trabalho"),
+        md("## Q6: Diferenças por região e modelo de trabalho"),
         code("""\
 sal_regiao = remuneracao.groupby("regiao").apply(
     lambda g: (g["salario_medio"] * g["n_respondentes"]).sum() / g["n_respondentes"].sum()
@@ -867,7 +868,7 @@ plt.tight_layout()
 ## Conferindo com o resultado local
 
 Compare os números acima com `docs/_eda_achados.txt` e os PNGs em
-`presentation/charts/` — devem bater (mesma base, mesma lógica de
+`presentation/charts/`: devem bater (mesma base, mesma lógica de
 harmonização, só rodando em Spark/AWS em vez de pandas local)."""),
     ]
     return notebook(cells)

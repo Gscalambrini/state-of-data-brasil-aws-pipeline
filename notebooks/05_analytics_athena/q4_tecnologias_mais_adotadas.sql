@@ -21,7 +21,7 @@ ORDER BY categoria_tecnologia, rk;
 -- 4b. Evolução de adoção das linguagens mais usadas, ano a ano
 -- Observação: os valores de "tecnologia" na Gold são sempre minúsculos (saem
 -- da sanitização de nomes de coluna feita na Bronze), por isso o filtro usa
--- 'python'/'sql'/'r' em vez de 'Python'/'SQL'/'R' — a versão com maiúsculas
+-- 'python'/'sql'/'r' em vez de 'Python'/'SQL'/'R': a versão com maiúsculas
 -- roda sem erro mas retorna 0 linhas.
 SELECT
     ano_pesquisa,

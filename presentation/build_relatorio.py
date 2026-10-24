@@ -1,4 +1,4 @@
-"""Gera o relatorio executivo (Entrega 1) em .docx, no mesmo formato de um
+r"""Gera o relatorio executivo (Entrega 1) em .docx, no mesmo formato de um
 relatorio tecnico-cientifico (capa, sumario, resumo executivo, introducao,
 metodologia, analise, diagnostico, recomendacoes, conclusao, referencias,
 anexos) usado como referencia pelo grupo na Fase 1, formatado de acordo com
@@ -215,7 +215,7 @@ def caption(document, text, *, bold_prefix=None, center=True, italic=False, size
     return p
 
 
-def add_figure(document, image_path, fig_num, title, *, width_cm=15.5, source="Dataset State of Data Brasil (2023-2026) — Data Hackers / Kaggle, processado via AWS Glue/Athena."):
+def add_figure(document, image_path, fig_num, title, *, width_cm=15.5, source="Dataset State of Data Brasil (2023-2026), Data Hackers/Kaggle, processado via AWS Glue/Athena."):
     caption(document, title, bold_prefix=f"Gráfico {fig_num}: ")
     p = document.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -433,13 +433,13 @@ body(
     doc,
     "Apenas 23,9% dos profissionais de Dados se identificam como mulheres, "
     "participação que cai de 28,2% no nível Júnior para 20,1% no nível "
-    "Especialista/Staff+ — e, no nível Sênior, mulheres recebem em média 15% "
+    "Especialista/Staff+, e, no nível Sênior, mulheres recebem em média 15% "
     "menos que homens. Em tecnologia, Python ultrapassou o SQL como "
     "linguagem mais usada entre 2024 e 2025 (de 48,9% para 55,2% de adoção, "
     "contra uma queda de 55,4% para 50,5% do SQL). A adoção individual de IA "
-    "Generativa saltou de 80,3% (2024) para 97,9% (2025) — mas apenas 23,8% "
+    "Generativa saltou de 80,3% (2024) para 97,9% (2025), mas apenas 23,8% "
     "dos gestores tratam o tema como prioridade executiva em suas empresas, "
-    "evidenciando um gap de quase 75 pontos percentuais entre uso individual "
+    "uma diferença de quase 75 pontos percentuais entre uso individual "
     "e estratégia corporativa formal. Regionalmente, o Sudeste paga, em "
     "média, 36% a mais que o Nordeste, e o modelo de trabalho híbrido "
     "flexível supera o modelo 100% presencial em remuneração média (R$ "
@@ -498,7 +498,7 @@ body(
     doc,
     "Para apoiar essa decisão, este relatório utiliza a pesquisa State of "
     "Data Brasil, realizada anualmente pela comunidade Data Hackers "
-    "(DATA HACKERS, 2026) — uma das mais completas fontes de "
+    "(DATA HACKERS, 2026), uma das mais completas fontes de "
     "informação sobre o perfil dos profissionais de Dados no país, reunindo "
     "dados sobre formação, remuneração, tecnologias utilizadas, modelo de "
     "trabalho, diversidade e adoção de Inteligência Artificial. Foram "
@@ -513,7 +513,7 @@ body(
     "Diferente de uma análise pontual, este trabalho constrói um pipeline de "
     "dados completo em ambiente de nuvem (AWS), contemplando desde a "
     "ingestão dos dados brutos até a disponibilização de tabelas analíticas "
-    "prontas para consulta — reproduzindo, em escala reduzida, o tipo de "
+    "prontas para consulta, reproduzindo, em escala reduzida, o tipo de "
     "arquitetura que uma Instituição Financeira de grande porte utilizaria "
     "para seus próprios dados de mercado e de força de trabalho. A seção 2 "
     "detalha essa arquitetura."
@@ -594,17 +594,17 @@ body(
     "Na camada Bronze, os três arquivos CSV originais são lidos diretamente "
     "pelo caminho exato no S3 e gravados em formato Parquet, um por edição "
     "da pesquisa, preservando fielmente os dados como vieram da fonte. Na "
-    "camada Silver, as três edições — que usam schemas de coluna diferentes "
-    "entre si — são harmonizadas num formato único, com aproximadamente 28 "
+    "camada Silver, as três edições (que usam schemas de coluna diferentes "
+    "entre si) são harmonizadas num formato único, com aproximadamente 28 "
     "campos-chave padronizados (demografia, cargo, senioridade, salário, "
     "região, modelo de trabalho, tecnologias e uso de IA). Na camada Gold, "
     "os dados harmonizados são agregados em sete tabelas especializadas, uma "
     "para cada pergunta de negócio deste relatório. Todas as etapas rodaram "
     "de fato no ambiente AWS Academy Lab do grupo, catalogando as tabelas "
-    "automaticamente a partir do próprio código do notebook — sem o uso de "
+    "automaticamente a partir do próprio código do notebook (sem o uso de "
     "um Glue Crawler, já que essa catalogação automática via código atende "
     "integralmente à exigência de “catalogação das tabelas com o Glue "
-    "Jobs”."
+    "Jobs”)."
 )
 
 heading2(doc, "2.3", "Preparação e tratamento dos dados")
@@ -619,7 +619,7 @@ body(
     "nem toda edição da pesquisa inclui todas as perguntas (a edição "
     "2023-2024, por exemplo, não contempla perguntas sobre Inteligência "
     "Artificial Generativa), os campos ausentes foram tratados como nulos "
-    "explícitos, em vez de preenchidos artificialmente — o que explica "
+    "explícitos, em vez de preenchidos artificialmente, o que explica "
     "algumas diferenças de cobertura temporal citadas ao longo da Seção 4."
 )
 
@@ -654,7 +654,7 @@ body(
     "gênero, tecnologias, adoção de IA, prioridade de IA nas empresas e "
     "modelo de trabalho). Para cada uma, foi escrito um script SQL "
     "independente, executado diretamente no Amazon Athena contra essas "
-    "tabelas — o conjunto completo dos sete scripts acompanha este relatório "
+    "tabelas. O conjunto completo dos sete scripts acompanha este relatório "
     "como parte da Entrega 3 (notebooks e scripts)."
 )
 
@@ -716,7 +716,7 @@ body(
     doc,
     "Em termos de senioridade, o mercado é relativamente maduro: os níveis "
     "Pleno (3.227) e Sênior (3.175) somados superam o nível Júnior (2.587), "
-    "e o nível Especialista/Staff+ ainda é raro (349 respondentes) — um "
+    "e o nível Especialista/Staff+ ainda é raro (349 respondentes), um "
     "indício de que o topo da carreira técnica em Dados, no Brasil, ainda "
     "está em formação."
 )
@@ -726,15 +726,15 @@ heading2(doc, "4.2", "Quais perfis profissionais são mais valorizados pelo merc
 body(
     doc,
     "Entre os cargos com volume relevante de respostas (50 ou mais "
-    "respondentes), os perfis técnicos mais avançados — Engenharia de "
-    "Machine Learning, Engenharia de Dados e Product Management técnico — "
+    "respondentes), os perfis técnicos mais avançados, como Engenharia de "
+    "Machine Learning, Engenharia de Dados e Product Management técnico, "
     "são consistentemente os mais bem remunerados. O Engenheiro de "
     "Machine Learning/AI Engineer lidera com média de R$ 16.382 por mês, "
     "seguido pelo Engenheiro de Machine Learning (R$ 14.414) e pelo "
-    "Engenheiro de Dados/Data Architect (R$ 14.294). Em contraste, cargos de "
-    "análise mais tradicionais, como Analista de Dados e Analista de BI, "
-    "aparecem com remuneração média sensivelmente menor — um sinal claro de "
-    "onde o mercado está precificando a escassez de competências."
+    "Engenheiro de Dados/Data Architect (R$ 14.294). Por outro lado, cargos "
+    "de análise mais tradicionais, como Analista de Dados e Analista de BI, "
+    "aparecem com remuneração média sensivelmente menor, um sinal claro de "
+    "onde o mercado mais sente a falta de certas competências."
 )
 add_figure(doc, CHARTS / "04_salario_por_cargo.png", 5, "Remuneração média por cargo (cargos com ≥ 50 respondentes)", width_cm=15.5)
 
@@ -744,22 +744,22 @@ body(
     "A diversidade de gênero no mercado de Dados brasileiro segue um padrão "
     "preocupante e consistente com o observado em outras áreas de "
     "tecnologia: apenas 23,9% dos respondentes se identificam como "
-    "mulheres. Pior, essa participação não é estável ao longo da carreira — "
+    "mulheres. Pior, essa participação não é estável ao longo da carreira: "
     "ela cai de 28,2% no nível Júnior para 22,3% no Pleno, 20,7% no Sênior e "
-    "20,1% no Especialista/Staff+ (dados da edição mais recente), um padrão "
-    "conhecido como “funil furado” (leaky pipeline), em que mulheres "
-    "deixam a carreira técnica, ou deixam de ser promovidas, em ritmo maior "
-    "que homens."
+    "20,1% no Especialista/Staff+ (dados da edição mais recente), um "
+    "cenário em que mais mulheres do que homens deixam a carreira técnica "
+    "ou são promovidas com menos frequência."
 )
 add_figure(doc, CHARTS / "05_diversidade_genero_senioridade.png", 6, "Participação feminina cai conforme sobe a senioridade", width_cm=14.0)
 body(
     doc,
-    "Esse padrão se soma a um gap salarial relevante: no nível Sênior, "
-    "mulheres recebem em média R$ 12.012, contra R$ 14.097 dos homens — uma "
-    "diferença de aproximadamente 15%. No nível Especialista/Staff+, a "
-    "diferença é semelhante (R$ 17.543 contra R$ 20.618, cerca de 15%). Já "
-    "nos níveis iniciais (Júnior e Pleno), o gap é bem menor (entre 2% e "
-    "5%), sugerindo que a desigualdade se acumula ao longo da carreira, em "
+    "Esse padrão se soma a uma diferença salarial relevante: no nível "
+    "Sênior, mulheres recebem em média R$ 12.012, contra R$ 14.097 dos "
+    "homens, uma diferença de aproximadamente 15%. No nível "
+    "Especialista/Staff+, a diferença é semelhante (R$ 17.543 contra R$ "
+    "20.618, cerca de 15%). Já nos níveis iniciais (Júnior e Pleno), a "
+    "diferença é bem menor (entre 2% e 5%), sugerindo que a desigualdade se "
+    "acumula ao longo da carreira, em "
     "vez de já estar presente na entrada do mercado."
 )
 add_figure(doc, CHARTS / "06_gap_salarial_genero.png", 7, "Diferença salarial entre gêneros, por senioridade", width_cm=14.5)
@@ -784,7 +784,7 @@ body(
     "adoção em 2023 para 55,2% em 2025, enquanto o SQL caiu de 55,4% para "
     "50,5% no mesmo período (depois de um pico de 59,6% em 2024). O "
     "cruzamento entre as duas curvas acontece exatamente entre as edições de "
-    "2024 e 2025 — um sinal direto de para onde a demanda de mercado está "
+    "2024 e 2025, um sinal direto de para onde a demanda de mercado está "
     "migrando, e um indicativo claro de prioridade para programas de "
     "capacitação técnica."
 )
@@ -795,7 +795,7 @@ body(
     doc,
     "A adoção individual de Inteligência Artificial Generativa no dia a dia "
     "de trabalho avançou de forma expressiva: de 80,3% dos profissionais em "
-    "2024 para 97,9% em 2025 — praticamente universal (a edição 2023-2024 "
+    "2024 para 97,9% em 2025, praticamente universal (a edição 2023-2024 "
     "não incluía essa pergunta na pesquisa, por isso a comparação começa em "
     "2024). O uso pago de ferramentas de IA também cresceu, de 9,3% para "
     "39,0% dos profissionais, e o uso de IA especificamente para geração de "
@@ -807,8 +807,8 @@ body(
     "Entretanto, essa adoção individual quase universal não se traduz, na "
     "mesma proporção, em prioridade estratégica formal dentro das empresas: "
     "apenas 23,8% dos gestores entrevistados classificam a IA Generativa "
-    "como “prioridade alta (foco executivo)” — a maior parte (36,8%) a "
-    "trata como “prioridade de médio prazo”, e 11,3% afirmam que a IA "
+    "como “prioridade alta (foco executivo)”; a maior parte (36,8%) trata o "
+    "tema como “prioridade de médio prazo”, e 11,3% afirmam que a IA "
     "Generativa “não é prioridade” na empresa. Esse descompasso de "
     "quase 75 pontos percentuais entre uso individual (97,9%) e priorização "
     "corporativa (23,8%) representa, ao mesmo tempo, um risco de governança "
@@ -822,13 +822,13 @@ body(
     doc,
     "Sim, e de forma expressiva. Regionalmente, o Sudeste segue pagando os "
     "maiores salários médios (R$ 11.463), seguido por Centro-Oeste (R$ "
-    "10.710) e Sul (R$ 10.047); o Nordeste tem a menor média (R$ 8.459) — "
+    "10.710) e Sul (R$ 10.047); o Nordeste tem a menor média (R$ 8.459), "
     "uma diferença de 36% entre as duas pontas. Já em relação ao modelo de "
     "trabalho, o padrão observado desafia a intuição de que o trabalho "
     "presencial seria mais valorizado: o modelo híbrido flexível (em que o "
     "profissional escolhe quando ir ao escritório) tem a maior remuneração "
     "média (R$ 12.546), seguido pelo modelo 100% remoto (R$ 11.833); o "
-    "modelo 100% presencial tem a menor média de todos (R$ 7.361) — quase "
+    "modelo 100% presencial tem a menor média de todos (R$ 7.361), quase "
     "70% menor que o híbrido flexível."
 )
 add_figure(doc, CHARTS / "11_salario_regiao_modelo_trabalho.png", 12, "Salário médio por região e por modelo de trabalho", width_cm=16.0)
@@ -858,25 +858,25 @@ body(
     "brasileiro em maturação acelerada, mas com desequilíbrios estruturais "
     "claros. Em conjunto, os indicadores de tecnologia (Seção 4.4) e de "
     "Inteligência Artificial (Seção 4.5) mostram uma velocidade de mudança "
-    "muito alta — a inversão Python/SQL e o salto de adoção de IA "
-    "aconteceram em menos de dois anos —, o que significa que uma estratégia "
+    "muito alta. A inversão Python/SQL e o salto de adoção de IA "
+    "aconteceram em menos de dois anos, o que significa que uma estratégia "
     "de capacitação desenhada hoje com base em dados de dois ou três anos "
     "atrás já estaria defasada."
 )
 body(
     doc,
     "Ao mesmo tempo, os indicadores de diversidade de gênero (Seção 4.3) e "
-    "de diferenças regionais e de modelo de trabalho (Seção 4.6) revelam "
-    "desequilíbrios estruturais mais estáveis ao longo do tempo, que não se "
-    "resolvem sozinhos com a evolução natural do mercado — exigem ação "
-    "deliberada. O gap salarial de gênero no nível Sênior (15%) e a "
-    "concentração de 61% dos profissionais no Sudeste são padrões "
+    "das diferenças regionais e de modelo de trabalho (Seção 4.6) mostram "
+    "desigualdades que persistem ao longo do tempo e que não desaparecem "
+    "naturalmente com a evolução do mercado, exigindo medidas específicas "
+    "para mudar esse cenário. A diferença salarial de gênero no nível "
+    "Sênior (15%) e a concentração de 61% dos profissionais no Sudeste são padrões "
     "consistentes nas três edições da pesquisa, não uma anomalia pontual."
 )
 body(
     doc,
-    "Por fim, o gap entre uso individual de IA Generativa (97,9%) e "
-    "prioridade executiva formal (23,8%) é, possivelmente, o achado mais "
+    "Por fim, a diferença entre uso individual de IA Generativa (97,9%) e "
+    "prioridade executiva (23,8%) é, possivelmente, o achado mais "
     "acionável deste relatório: diferente dos desequilíbrios estruturais de "
     "gênero e região, que exigem políticas de longo prazo, formalizar uma "
     "estratégia de IA é uma decisão que uma Instituição Financeira pode "
@@ -884,18 +884,16 @@ body(
 )
 body(
     doc,
-    "Importante destacar uma limitação desta leitura: a harmonização de três "
-    "edições de pesquisa com schemas diferentes impõe que algumas variáveis "
-    "— notadamente região, senioridade e as perguntas específicas sobre IA "
-    "Generativa — não estejam disponíveis, ou estejam parcialmente "
-    "disponíveis, em todas as edições (a edição 2023-2024, por exemplo, não "
-    "perguntava sobre IA Generativa). Os indicadores regionais e de "
-    "senioridade apresentados cobrem cerca de 72% da base total "
-    "(9.338 de 13.057 respondentes), o restante não informou esses campos. "
-    "Essa é uma limitação inerente ao uso de pesquisas de mercado "
-    "autodeclaradas e de edições com questionários diferentes, não um erro "
-    "de processamento, e não compromete a validade direcional dos achados "
-    "apresentados.",
+    "Vale destacar uma limitação desta análise: como foram reunidas três "
+    "edições da pesquisa com questionários diferentes, algumas informações, "
+    "principalmente sobre região, senioridade e uso de IA Generativa, não "
+    "estão disponíveis em todas as edições, ou aparecem apenas "
+    "parcialmente. A edição de 2023 a 2024, por exemplo, não incluía "
+    "perguntas sobre IA Generativa. Os indicadores de região e senioridade "
+    "apresentados abrangem cerca de 72% da base total (9.338 dos 13.057 "
+    "respondentes), já que os demais não informaram esses dados. Portanto, "
+    "não se trata de um erro no processamento dos dados, e isso não "
+    "compromete as principais tendências identificadas na análise.",
     italic=True,
 )
 
@@ -914,44 +912,45 @@ body(
 recs = [
     ("Formalize uma estratégia corporativa de IA Generativa",
      "98% dos profissionais já usam IA Generativa no dia a dia, mas apenas "
-     "24% das empresas tratam isso como prioridade executiva — uma janela "
-     "de oportunidade clara. Recomenda-se estruturar uma governança formal "
-     "de uso de IA (políticas de uso, ferramentas homologadas, treinamento) "
-     "antes que a adoção informal gere riscos de segurança da informação ou "
-     "oportunidades perdidas de produtividade.",
+     "24% das empresas tratam isso como prioridade executiva, uma janela "
+     "de oportunidade clara. É importante criar regras claras para o uso "
+     "de IA nas empresas, definindo quais ferramentas podem ser usadas e "
+     "oferecendo treinamento aos funcionários. Assim, é possível evitar "
+     "riscos à segurança das informações e aproveitar melhor as "
+     "oportunidades de aumentar a produtividade.",
      "Redução de risco de uso não-governado de IA, ganho de produtividade "
-     "mensurável e vantagem de ser uma das primeiras empresas do setor "
-     "financeiro a formalizar a estratégia."),
+     "e vantagem de ser uma das primeiras empresas do setor financeiro a "
+     "formalizar a estratégia."),
     ("Invista em equidade de gênero como vantagem de retenção",
      "A participação feminina cai de 28% (Júnior) para 20% (Especialista), "
-     "com gap salarial de 15% no nível Sênior. Recomenda-se revisar "
+     "com diferença salarial de 15% no nível Sênior. Recomenda-se revisar "
      "políticas de equidade salarial por nível de senioridade, criar "
      "programas de mentoria e desenvolvimento de liderança para mulheres "
      "em Dados, e monitorar a taxa de promoção por gênero como um "
      "indicador formal de RH.",
-     "Ampliação do pool de talento disponível para contratação, redução de "
-     "risco de turnover feminino nos níveis intermediários da carreira, e "
-     "fortalecimento da marca empregadora."),
+     "Mais opções de profissionais para contratar, menor risco de perder "
+     "mulheres que estão no meio da carreira, e fortalecimento da imagem "
+     "da empresa como um bom lugar para trabalhar."),
     ("Adote o trabalho remoto para acessar talento fora do Sudeste",
      "61% do talento e os maiores salários estão concentrados no Sudeste, "
      "que paga 36% a mais que o Nordeste. Recomenda-se estruturar vagas "
-     "remotas ou híbridas flexíveis — que, segundo os próprios dados da "
-     "pesquisa, já pagam mais que o modelo presencial — como estratégia "
+     "remotas ou híbridas flexíveis, que, segundo os próprios dados da "
+     "pesquisa, já pagam mais que o modelo presencial, como estratégia "
      "deliberada de acesso a profissionais qualificados em outras regiões, "
      "a um custo salarial regional menor.",
-     "Ampliação do pool de talento disponível, redução de custo de "
-     "contratação em relação a vagas restritas ao Sudeste, e maior "
-     "velocidade de preenchimento de vagas técnicas."),
+     "Mais profissionais disponíveis para contratar, redução dos custos "
+     "de contratação em comparação com vagas limitadas ao Sudeste, e "
+     "maior rapidez para preencher vagas técnicas."),
     ("Direcione capacitação para Python e Engenharia de Dados/ML",
      "Python já ultrapassou o SQL como linguagem mais usada, e os cargos de "
      "Engenharia de Dados e Machine Learning/AI Engineering são os mais "
-     "bem remunerados do mercado. Recomenda-se direcionar o orçamento de "
-     "capacitação interna — e os critérios de contratação — para essas "
-     "competências especificamente, em vez de uma capacitação genérica em "
-     "“Dados”.",
-     "Alinhamento entre o investimento em capacitação e as competências "
-     "que o mercado já está precificando como mais escassas, reduzindo o "
-     "risco de formar profissionais em tecnologias de demanda decrescente."),
+     "bem remunerados do mercado. A recomendação é focar o orçamento de "
+     "treinamentos internos e os critérios de contratação nas competências "
+     "que o mercado mais valoriza, em vez de investir em capacitações "
+     "genéricas na área de Dados.",
+     "Alinhar os investimentos em treinamento às competências que estão "
+     "em falta no mercado, evitando gastar recursos na formação de "
+     "profissionais em tecnologias cuja demanda está diminuindo."),
 ]
 for i, (title, text, impact) in enumerate(recs, start=1):
     heading2(doc, f"6.{i}", title)
@@ -964,16 +963,17 @@ for i, (title, text, impact) in enumerate(recs, start=1):
 heading1(doc, 7, "CONCLUSÃO")
 body(
     doc,
-    "A análise da pesquisa State of Data Brasil, processada através de um "
-    "pipeline de dados completo na AWS, permite traçar um retrato "
-    "consistente do mercado brasileiro de profissionais de Dados: um "
-    "mercado concentrado geograficamente no Sudeste, com forte premiação "
-    "salarial para competências técnicas avançadas (Engenharia de Dados e "
-    "Machine Learning), diversidade de gênero ainda distante do equilíbrio, "
-    "e uma adoção de Inteligência Artificial Generativa que avançou, em "
-    "menos de dois anos, de uma novidade para uma prática quase universal "
-    "entre os profissionais — ainda que não acompanhada, na mesma "
-    "velocidade, por uma estratégia formal nas empresas."
+    "A análise da pesquisa State of Data Brasil, realizada por meio de um "
+    "pipeline de dados completo na AWS, ajuda a entender melhor o cenário "
+    "do mercado brasileiro de profissionais de Dados. Os resultados "
+    "mostram um mercado concentrado no Sudeste, com salários mais altos "
+    "para quem domina competências técnicas avançadas, como Engenharia de "
+    "Dados e Machine Learning, e uma diversidade de gênero que ainda está "
+    "desequilibrada. Também mostram que o uso de Inteligência Artificial "
+    "Generativa cresceu rapidamente e, em menos de dois anos, passou de "
+    "novidade para algo comum entre os profissionais, enquanto as empresas "
+    "ainda avançam mais lentamente na criação de estratégias formais para "
+    "seu uso."
 )
 body(
     doc,
@@ -983,19 +983,20 @@ body(
     "desenvolver nas competências certas (Python, Engenharia de Dados, "
     "Machine Learning), acessar talento além do eixo Sudeste via modelos "
     "de trabalho flexíveis, corrigir deliberadamente desequilíbrios de "
-    "gênero que o mercado não corrige sozinho, e formalizar — antes da "
-    "concorrência — uma estratégia corporativa de Inteligência Artificial "
-    "que hoje ainda é exceção, não regra."
+    "gênero que o mercado não corrige sozinho, e formalizar (antes da "
+    "concorrência) uma estratégia de Inteligência Artificial que hoje "
+    "ainda é exceção, não regra."
 )
 body(
     doc,
-    "Do ponto de vista técnico, este relatório demonstra também a "
-    "viabilidade de se construir, com ferramentas de nuvem amplamente "
-    "disponíveis (Amazon S3, Glue e Athena), um pipeline de dados completo "
-    "e reprodutível — da ingestão de dados brutos e heterogêneos até a "
-    "geração de indicadores executivos — em prazo e custo compatíveis com "
-    "um projeto piloto, o que reforça a viabilidade prática das "
-    "recomendações aqui propostas."
+    "Do ponto de vista técnico, este relatório também mostra que é "
+    "possível criar um processo completo e replicável de tratamento e "
+    "análise de dados usando ferramentas de nuvem bastante acessíveis, "
+    "como Amazon S3, Glue e Athena. Esse processo vai desde a coleta de "
+    "dados brutos de diferentes formatos até a geração de indicadores para "
+    "apoiar decisões, tudo dentro de um prazo e custo viáveis para um "
+    "projeto piloto. Isso reforça que as recomendações apresentadas aqui "
+    "podem ser colocadas em prática."
 )
 
 # ===========================================================================

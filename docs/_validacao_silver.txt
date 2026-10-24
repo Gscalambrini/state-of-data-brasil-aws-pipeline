@@ -1,4 +1,4 @@
-Shape: (14005, 37)
+Shape: (14002, 37)
 
 --- dtypes ---
 id_respondente                        str
@@ -79,34 +79,34 @@ usa_ia_para_codigo                 0.0
 id_unico                           0.0
 
 --- amostra (5 linhas aleatorias, colunas chave) ---
-                                         id_unico  ano_pesquisa     genero        regiao                                       cargo_atual nivel_senioridade                    faixa_salarial  faixa_salarial_valor_medio                                                                                           modelo_trabalho_atual prioridade_ia_empresa  usa_ia_generativa  paga_por_ia_generativa  usa_ia_para_codigo
-3647   2023-2024_p40nhga6y98veqzp2hdump40nhgqowxf          2023  Masculino       Sudeste                    Analista de Dados/Data Analyst            Sênior  de R$ 12.001/mês a R$ 16.000/mês                     14000.5  Modelo híbrido flexível (o funcionário tem liberdade para escolher quando estar no escritório presencialmente)                   NaN                1.0                       0                   0
-12396  2025-2026_qrqazws5s7mv1tn1xsqrqazwx8usut4e          2025   Feminino       Sudeste                         Analista de BI/BI Analyst            Sênior  de R$ 12.001/mês a R$ 16.000/mês                     14000.5                                                                                              Modelo 100% remoto                   NaN                1.0                       1                   0
-1580   2023-2024_auxzgwqp25a1sjm28hauxzssjt4yu74a          2023  Masculino  Centro-oeste                                       Outra Opção             Pleno   de R$ 8.001/mês a R$ 12.000/mês                     10000.5                                                                                          Modelo 100% presencial                   NaN                1.0                       0                   0
-7877   2024-2025_26h3gnk2ybnxzwhabctn1si26h3gn5z4          2024  Masculino       Sudeste  Engenheiro de Dados/Data Engineer/Data Architect             Pleno   de R$ 8.001/mês a R$ 12.000/mês                     10000.5                                                            Modelo híbrido com dias fixos de trabalho presencial                   NaN                1.0                       0                   1
-4874   2023-2024_x9k7p4cfrcbv7mudpx9k7ptjkjuqa8xy          2023   Feminino           Sul                    Analista de Dados/Data Analyst            Júnior    de R$ 4.001/mês a R$ 6.000/mês                      5000.5  Modelo híbrido flexível (o funcionário tem liberdade para escolher quando estar no escritório presencialmente)                   NaN                0.0                       0                   0
+                                         id_unico  ano_pesquisa     genero    regiao                                             cargo_atual nivel_senioridade                    faixa_salarial  faixa_salarial_valor_medio                                 modelo_trabalho_atual prioridade_ia_empresa  usa_ia_generativa  paga_por_ia_generativa  usa_ia_para_codigo
+2144   2023-2024_eq8gx6avhdzvpobn0xeq8gx6qdd1qnta          2023  Masculino   Sudeste                               Analista de BI/BI Analyst            Sênior    de R$ 4.001/mês a R$ 6.000/mês                      5000.5  Modelo híbrido com dias fixos de trabalho presencial                   NaN                1.0                       0                   0
+4125   2023-2024_s9q41n9tzjgqgcs9q4dpdwsnik7peye8          2023  Masculino   Sudeste                       Cientista de Dados/Data Scientist            Sênior  de R$ 16.001/mês a R$ 20.000/mês                     18000.5                                    Modelo 100% remoto                   NaN                1.0                       1                   0
+2140   2023-2024_epf76b1c2z9at10pm0epf78ntmodti5c          2023  Masculino   Sudeste  Engenheiro de Machine Learning/ML Engineer/AI Engineer            Sênior  de R$ 16.001/mês a R$ 20.000/mês                     18000.5                                    Modelo 100% remoto                   NaN                1.0                       1                   0
+5391   2024-2025_90rtkgd4ukq12a8rbto90rkpoastrjla          2024  Masculino  Nordeste                               Analista de BI/BI Analyst            Júnior    de R$ 1.001/mês a R$ 2.000/mês                      1500.5                                Modelo 100% presencial                   NaN                1.0                       0                   0
+13243  2025-2026_v8efrmnyzcy4xh081v8efvpc8a74qoqb          2025   Feminino  Nordeste        Engenheiro de Dados/Data Engineer/Data Architect             Pleno    de R$ 4.001/mês a R$ 6.000/mês                      5000.5                                    Modelo 100% remoto                   NaN                1.0                       0                   0
 
 --- nivel_senioridade por ano_pesquisa (conta 'Especialista/Staff+' por ano) ---
 nivel_senioridade  Especialista/Staff+  Júnior  Pleno  Sênior
 ano_pesquisa                                                 
 2023                                 0    1046   1392    1419
-2024                                 0     868   1377    1573
-2025                               349     518    776     858
+2024                                 0     868   1376    1572
+2025                               349     518    775     858
 
 --- salario medio por nivel_senioridade e ano ---
 ano_pesquisa            2023     2024     2025
 nivel_senioridade                             
 Especialista/Staff+      NaN      NaN  20029.0
 Júnior                3909.0   4158.0   4153.0
-Pleno                 7540.0   8048.0   8301.0
-Sênior               13669.0  14604.0  14470.0
+Pleno                 7540.0   8050.0   8299.0
+Sênior               13669.0  14591.0  14470.0
 
 --- genero por nivel_senioridade (% dentro de cada nivel) ---
 genero               Feminino  Masculino  Outro  Prefiro não informar
 nivel_senioridade                                                    
 Especialista/Staff+      20.1       79.1    0.3                   0.6
 Júnior                   28.2       71.3    0.1                   0.4
-Pleno                    24.7       74.8    0.2                   0.3
+Pleno                    24.7       74.9    0.2                   0.3
 Sênior                   21.3       78.2    0.2                   0.3
 
 --- usa_ia_generativa (%) por ano_pesquisa ---
@@ -117,7 +117,7 @@ ano_pesquisa
 
 
 
-Tecnologias long shape: (77051, 6)
+Tecnologias long shape: (77029, 6)
 --- top 10 linguagens por ano (contagem) ---
 
 2023:
@@ -135,8 +135,8 @@ Não utilizo nenhuma linguagem  305
 
 2024:
       tecnologia    n
-             SQL 3146
-          Python 2935
+             SQL 3145
+          Python 2934
                R  352
             Java  291
       JavaScript  223
@@ -148,9 +148,9 @@ Visual Basic/VBA  215
 
 2025:
       tecnologia    n
-          Python 1929
-             SQL 1764
-               R  328
+          Python 1928
+             SQL 1763
+               R  327
            Scala   70
         C/C++/C#   49
             Rust   35

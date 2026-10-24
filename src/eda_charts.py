@@ -41,8 +41,8 @@ def salvar(fig, nome: str) -> None:
     # bbox_inches="tight" e rotulos de eixo longos, uma anotacao de texto
     # (ax.text) sem clip_on pode vazar um fragmento fora da area do grafico.
     # (Tentei aplicar isso tambem aos rotulos de tick via
-    # ax.get_yticklabels(), mas isso quebra a renderizacao normal dos ticks
-    # — os proprios rotulos somem. Por isso o fix aqui cobre so anotacoes.)
+    # ax.get_yticklabels(), mas isso quebra a renderizacao normal dos ticks:
+    # os proprios rotulos somem. Por isso o fix aqui cobre so anotacoes.)
     for ax in fig.get_axes():
         for txt in ax.texts:
             txt.set_clip_on(True)
@@ -79,7 +79,7 @@ def main() -> None:
     # clip_on=True em todo ax.text() deste arquivo: sem isso, o matplotlib
     # (Agg) deixa vazar um fragmento fantasma de um dos rotulos no canto
     # inferior esquerdo da figura quando o eixo tem rotulos de categoria
-    # longos (como os nomes de cargo abaixo) — bug reproduzido e isolado
+    # longos (como os nomes de cargo abaixo). Bug reproduzido e isolado
     # durante o desenvolvimento, ver historico de depuracao.
     for y, v in enumerate(top_cargos.values):
         ax.text(v, y, f" {fmt_milhar(v)}", va="center", color=INK_SECONDARY, fontsize=9, clip_on=True)
@@ -148,7 +148,7 @@ def main() -> None:
     salvar(fig, "05_diversidade_genero_senioridade.png")
     queda = ct["Feminino"].iloc[0] - ct["Feminino"].iloc[-1]
     achado(f"Q3: participação feminina cai de {ct['Feminino'].iloc[0]:.0f}% (Júnior) para "
-           f"{ct['Feminino'].loc['Sênior']:.0f}% (Sênior) — queda de {queda:.0f} p.p., evidência de "
+           f"{ct['Feminino'].loc['Sênior']:.0f}% (Sênior), queda de {queda:.0f} p.p., evidência de "
            f"'funil furado' (leaky pipeline).")
 
     sal_genero = gs.groupby(["nivel_senioridade", "genero"])["faixa_salarial_valor_medio"].mean().unstack()
@@ -173,7 +173,7 @@ def main() -> None:
     # para o padrao do matplotlib (em vez do estilo global de aplicar_estilo).
     # Motivo: com o estilo global ativo, plotar 4 categorias desta mesma
     # tabela longa (tec) em sequencia numa figura de 4 eixos causava uma
-    # corrupcao de renderizacao reprodutivel do matplotlib/Agg — rotulos de
+    # corrupcao de renderizacao reprodutivel do matplotlib/Agg: rotulos de
     # eixo sumindo e fragmentos de texto de OUTRAS categorias vazando entre
     # paineis. Isolar a geracao num rc_context com os parametros padrao
     # elimina o bug (bug isolado e confirmado durante o desenvolvimento;
@@ -188,8 +188,8 @@ def main() -> None:
     }
     with plt.rc_context(rc=matplotlib.rcParamsDefault):
         # figsize com proporcao ~2.16:1 (casa com a caixa de imagem do slide,
-        # 12.1x5.6pol no build_deck.js) — antes era 12x9 (4:3), que o "contain"
-        # do pptxgenjs encolhia pela altura, desperdicando largura e deixando
+        # 12.1x5.6pol no antigo build_deck.js). Antes era 12x9 (4:3), que o
+        # "contain" do pptxgenjs encolhia pela altura, desperdicando largura e deixando
         # os 4 paineis pequenos/apertados no slide final.
         fig, axes = plt.subplots(2, 2, figsize=(15, 6.94))
         for ax, (cat, label) in zip(axes.flat, categorias_labels.items()):
@@ -215,7 +215,7 @@ def main() -> None:
     )
     totais_por_ano = df.groupby("ano_pesquisa").size()
     evol_pct = evol.div(totais_por_ano, axis=0).mul(100)
-    # Python recebe a cor hero (magenta) de propósito — é o protagonista do achado.
+    # Python recebe a cor hero (magenta) de propósito: é o protagonista do achado.
     cor_linguagem = {"Python": CATEGORICAL[0], "SQL": CATEGORICAL[1], "R": CATEGORICAL[2]}
     fig, ax = plt.subplots(figsize=(7.5, 4.5))
     for lang in linguagens_top:
@@ -263,7 +263,7 @@ def main() -> None:
     achado(f"Q5: adoção individual de IA Generativa saltou de {adocao_ano.loc[2023]:.0f}% (2023) para "
            f"{adocao_ano.loc[2025]:.0f}% (2025).")
     achado(f"Q5: apenas {prioridade['Prioridade alta (foco executivo)']:.0f}% dos gestores dizem que IA "
-           f"Generativa é 'prioridade alta' da empresa — gap entre uso individual e estratégia formal.")
+           f"Generativa é 'prioridade alta' da empresa, um gap entre uso individual e estratégia formal.")
 
     # gap individual vs empresa (mesma edicao 2025, bases diferentes: todos vs gestores)
     uso_2025 = adocao_ano.loc[2025]

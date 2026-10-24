@@ -1,12 +1,12 @@
 """Gera os mesmos 11 graficos de src/eda_charts.py, mas a partir dos numeros
 REAIS obtidos ao vivo via Amazon Athena contra as tabelas Gold no AWS real
-(db_techchallenge_gt_fiap), em 2026-10-19 — nao a partir do protótipo local em
+(db_techchallenge_gt_fiap), em 2026-10-19, e nao a partir do protótipo local em
 pandas (que usa CSVs de referencia diferentes dos que estao realmente no S3
 do time, e por isso produz numeros levemente diferentes, ex. 14.002 vs os
 13.057 respondentes reais).
 
 Os valores abaixo foram copiados manualmente dos resultados do Athena (cada
-bloco cita a query equivalente em notebooks/05_analytics_athena/*.sql) — nao
+bloco cita a query equivalente em notebooks/05_analytics_athena/*.sql). Nao
 ha leitura de arquivo/parquet neste script, de proposito, para que o numero
 aqui seja uma transcricao direta e auditavel do que o Athena retornou.
 
@@ -96,7 +96,7 @@ def main() -> None:
     salvar(fig, "01_perfil_cargos.png")
     achado(f"Q1: cargo mais comum é '{items[-1][0]}' com {fmt_milhar(items[-1][1])} respondentes.")
 
-    # Fonte: q1_estrutura_mercado.sql (1b) — % entre quem informou a região
+    # Fonte: q1_estrutura_mercado.sql (1b); % entre quem informou a região
     regiao = {
         "Sudeste": 61.1,
         "Sul": 17.7,
@@ -180,7 +180,7 @@ def main() -> None:
     fig.tight_layout()
     salvar(fig, "05_diversidade_genero_senioridade.png")
     achado("Q3: participação feminina cai de 28,2% (Júnior) para 20,1% (Especialista/Staff+) na edição mais "
-           "recente — queda de ~8 p.p., evidência de 'funil furado' (leaky pipeline).")
+           "recente, queda de ~8 p.p., evidência de 'funil furado' (leaky pipeline).")
 
     sal_genero = {
         "Júnior": {"Masculino": 4025, "Feminino": 3814},
@@ -246,12 +246,12 @@ def main() -> None:
     ax.set_ylim(0, 100)
     salvar(fig, "08_evolucao_linguagens.png")
     achado(f"Q4: Python passou de {evol['python'][2023]:.0f}% (2023) para {evol['python'][2025]:.0f}% (2025) de "
-           f"adoção; SQL caiu de {evol['sql'][2023]:.0f}% (2023) para {evol['sql'][2025]:.0f}% (2025) — Python "
+           f"adoção; SQL caiu de {evol['sql'][2023]:.0f}% (2023) para {evol['sql'][2025]:.0f}% (2025); Python "
            f"ultrapassa o SQL como linguagem nº 1 entre 2024 e 2025.")
 
     # ------------------------------------------------------------------
     # Q5 - Adocao de IA e seu impacto
-    # Fonte: q5_adocao_ia.sql (5a, 5b) — 2023 não mede IA Generativa nessa edição
+    # Fonte: q5_adocao_ia.sql (5a, 5b); 2023 não mede IA Generativa nessa edição
     # ------------------------------------------------------------------
     adocao_ano = {2024: 80.3, 2025: 97.9}
     prioridade = {
@@ -284,9 +284,9 @@ def main() -> None:
     fig.tight_layout()
     salvar(fig, "09_adocao_ia_e_prioridade.png")
     achado(f"Q5: adoção individual de IA Generativa saltou de {adocao_ano[2024]:.0f}% (2024) para "
-           f"{adocao_ano[2025]:.0f}% (2025) — a edição 2023-2024 não incluía essa pergunta.")
+           f"{adocao_ano[2025]:.0f}% (2025); a edição 2023-2024 não incluía essa pergunta.")
     achado(f"Q5: apenas {prioridade['Prioridade alta (foco executivo)']:.0f}% dos gestores dizem que IA "
-           f"Generativa é 'prioridade alta' da empresa — gap de "
+           f"Generativa é 'prioridade alta' da empresa, um gap de "
            f"{adocao_ano[2025] - prioridade['Prioridade alta (foco executivo)']:.0f} p.p. entre uso individual e "
            f"estratégia formal.")
 

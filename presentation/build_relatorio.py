@@ -30,6 +30,7 @@ from docx import Document
 from docx.shared import Pt, Cm, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.table import WD_TABLE_ALIGNMENT
+from docx.enum.section import WD_SECTION_START
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
@@ -196,11 +197,12 @@ def heading2(document, number, text):
     return p
 
 
-def caption(document, text, *, bold_prefix=None, center=True, italic=False, size=10, color=None, space_before=6, space_after=4):
+def caption(document, text, *, bold_prefix=None, center=True, italic=False, size=10, color=None, space_before=6, space_after=4, keep_with_next=False):
     p = document.add_paragraph()
     p.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER if center else WD_ALIGN_PARAGRAPH.LEFT
     p.paragraph_format.space_before = Pt(space_before)
     p.paragraph_format.space_after = Pt(space_after)
+    p.paragraph_format.keep_with_next = keep_with_next
     if bold_prefix:
         r = p.add_run(bold_prefix)
         r.bold = True
@@ -216,9 +218,12 @@ def caption(document, text, *, bold_prefix=None, center=True, italic=False, size
 
 
 def add_figure(document, image_path, fig_num, title, *, width_cm=15.5, source="Dataset State of Data Brasil (2023-2026), Data Hackers/Kaggle, processado via AWS Glue/Athena."):
-    caption(document, title, bold_prefix=f"Gráfico {fig_num}: ")
+    # keep_with_next evita que a legenda fique "orfa" no fim de uma pagina,
+    # separada da imagem que ela descreve, quando o bloco nao cabe inteiro.
+    caption(document, title, bold_prefix=f"Gráfico {fig_num}: ", keep_with_next=True)
     p = document.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p.paragraph_format.keep_with_next = True
     run = p.add_run()
     run.add_picture(str(image_path), width=Cm(width_cm))
     caption(document, source, size=9, italic=True, color=GRAY, space_before=2, space_after=14)
@@ -279,19 +284,42 @@ section.top_margin = Cm(3.0)
 section.bottom_margin = Cm(2.0)
 section.different_first_page_header_footer = True
 
-# cabecalho (paginas internas): apenas o numero de pagina, alinhado a
-# direita, conforme ABNT (a capa conta mas nao exibe numero)
-header_p = section.header.paragraphs[0]
-header_p.text = ""
-header_p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-add_page_number_field(header_p)
-for run in header_p.runs:
-    run.font.size = Pt(10)
-    run.font.color.rgb = GRAY
-    run.font.name = FONT_NAME
-# pagina de capa sem cabecalho nem rodape
+# Elementos pre-textuais (capa e sumario): nenhuma pagina exibe numero,
+# conforme ABNT. A numeracao visivel comeca na secao seguinte (Resumo
+# Executivo), criada mais abaixo, ja na pagina certa da contagem.
+section.header.paragraphs[0].text = ""
 section.first_page_header.paragraphs[0].text = ""
 section.first_page_footer.paragraphs[0].text = ""
+
+
+def start_numbered_section(document, first_page_number):
+    """Cria uma nova secao com cabecalho numerado (numero a direita),
+    reiniciando a contagem de pagina em first_page_number. Usada uma unica
+    vez, logo antes do Resumo Executivo, para separar os elementos
+    pre-textuais (sem numero) do corpo do relatorio (numerado)."""
+    new_section = document.add_section(WD_SECTION_START.NEW_PAGE)
+    new_section.left_margin = Cm(3.0)
+    new_section.right_margin = Cm(2.0)
+    new_section.top_margin = Cm(3.0)
+    new_section.bottom_margin = Cm(2.0)
+    # Evita herdar o "cabecalho especial de primeira pagina" da secao
+    # anterior (capa/sumario): sem isso, a 1a pagina desta secao (Resumo
+    # Executivo) fica sem numero, porque usa um first-page-header vazio.
+    new_section.different_first_page_header_footer = False
+    new_section.header.is_linked_to_previous = False
+    header_p = new_section.header.paragraphs[0]
+    header_p.text = ""
+    header_p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+    add_page_number_field(header_p)
+    for run in header_p.runs:
+        run.font.size = Pt(10)
+        run.font.color.rgb = GRAY
+        run.font.name = FONT_NAME
+    sectPr = new_section._sectPr
+    pg_num_type = OxmlElement("w:pgNumType")
+    pg_num_type.set(qn("w:start"), str(first_page_number))
+    sectPr.append(pg_num_type)
+    return new_section
 
 # ===========================================================================
 # CAPA
@@ -309,7 +337,7 @@ r.font.name = FONT_NAME
 cell.paragraphs[0].paragraph_format.space_before = Pt(10)
 cell.paragraphs[0].paragraph_format.space_after = Pt(10)
 
-for _ in range(3):
+for _ in range(2):
     doc.add_paragraph()
 
 p = doc.add_paragraph()
@@ -324,14 +352,13 @@ r.font.bold = True
 r.font.size = Pt(12)
 r.font.name = FONT_NAME
 
-for _ in range(4):
+for _ in range(2):
     doc.add_paragraph()
 
 hr = doc.add_paragraph()
 set_bottom_border(hr, color_hex=MAGENTA_HEX, size=12)
 
-for _ in range(2):
-    doc.add_paragraph()
+doc.add_paragraph()
 
 p = doc.add_paragraph()
 p.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -349,7 +376,7 @@ r.italic = True
 r.font.size = Pt(12)
 r.font.name = FONT_NAME
 
-for _ in range(4):
+for _ in range(2):
     doc.add_paragraph()
 
 hr2 = doc.add_paragraph()
@@ -363,7 +390,7 @@ r.bold = True
 r.font.size = Pt(12)
 r.font.name = FONT_NAME
 
-for _ in range(6):
+for _ in range(1):
     doc.add_paragraph()
 
 p = doc.add_paragraph()
@@ -398,7 +425,8 @@ add_toc(doc)
 # ===========================================================================
 # RESUMO EXECUTIVO
 # ===========================================================================
-heading1(doc, None, "RESUMO EXECUTIVO")
+start_numbered_section(doc, first_page_number=3)
+heading1(doc, None, "RESUMO EXECUTIVO", page_break=False)
 
 body(
     doc,
